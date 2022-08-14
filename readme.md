@@ -15,9 +15,11 @@ NOTE: open another terminal to use the `ntnftd`.
 ### Create class
 
 This command will create a class named "first-class".
+
 `$ ntnftd tx ntnft create-class name=first-class uri="" uri-hash="" data="" price=1 --from bob --chain-id=ntnft`
 
 Check that class exists:
+
 `$ ntnftd q ntnft list-class`
 
 
