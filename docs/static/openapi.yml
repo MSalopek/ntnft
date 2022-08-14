@@ -51398,6 +51398,8 @@ definitions:
     description: |-
       Version defines the versioning scheme used to negotiate the IBC verison in
       the connection handshake.
+  ntnft.ntnft.MsgMintResponse:
+    type: object
   ntnft.ntnft.Params:
     type: object
     description: Params defines the parameters for the module.

@@ -9,6 +9,8 @@
  * ---------------------------------------------------------------
  */
 
+export type NtnftMsgMintResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */
