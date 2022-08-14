@@ -1,13 +1,19 @@
 syntax = "proto3";
 package ntnft.ntnft;
 
-import "ntnft/class.proto";
+import "ntnft/nt_nft.proto";
 
 option go_package = "nt-nft/x/ntnft/types";
+
+message OwnerCollection {
+  string class_id = 1;
+  NtNft token = 2;
+}
 
 message Owner {
   string index = 1; 
   string address = 2; 
-  Collection collection = 3; 
+
+  repeated OwnerCollection collection = 3;
 }
 
