@@ -20,7 +20,7 @@ func (k msgServer) Mint(goCtx context.Context, msg *types.MsgMint) (*types.MsgMi
 	class, found := k.GetClass(ctx, msg.ClassId)
 
 	if !found {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "ClassID does not exist")
+		return nil, sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "ClassID does not exist: %s", msg.ClassId)
 	}
 
 	// TODO: should panic if this cannot be parsed

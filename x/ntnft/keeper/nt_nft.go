@@ -1,9 +1,10 @@
 package keeper
 
 import (
+	"nt-nft/x/ntnft/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"nt-nft/x/ntnft/types"
 )
 
 // SetNtNft set a specific ntNft in the store from its index

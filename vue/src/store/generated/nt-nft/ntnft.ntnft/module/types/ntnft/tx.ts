@@ -4,12 +4,14 @@ import { Reader, Writer } from "protobufjs/minimal";
 export const protobufPackage = "ntnft.ntnft";
 
 export interface MsgMint {
-  address: string;
+  creator: string;
   class_id: string;
 }
 
 export interface MsgMintResponse {
+  class_id: string;
   token_id: string;
+  owner: string;
 }
 
 export interface MsgCreateClass {
@@ -26,12 +28,12 @@ export interface MsgCreateClassResponse {
   class_id: string;
 }
 
-const baseMsgMint: object = { address: "", class_id: "" };
+const baseMsgMint: object = { creator: "", class_id: "" };
 
 export const MsgMint = {
   encode(message: MsgMint, writer: Writer = Writer.create()): Writer {
-    if (message.address !== "") {
-      writer.uint32(10).string(message.address);
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
     }
     if (message.class_id !== "") {
       writer.uint32(18).string(message.class_id);
@@ -47,7 +49,7 @@ export const MsgMint = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.address = reader.string();
+          message.creator = reader.string();
           break;
         case 2:
           message.class_id = reader.string();
@@ -62,10 +64,10 @@ export const MsgMint = {
 
   fromJSON(object: any): MsgMint {
     const message = { ...baseMsgMint } as MsgMint;
-    if (object.address !== undefined && object.address !== null) {
-      message.address = String(object.address);
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
     } else {
-      message.address = "";
+      message.creator = "";
     }
     if (object.class_id !== undefined && object.class_id !== null) {
       message.class_id = String(object.class_id);
@@ -77,17 +79,17 @@ export const MsgMint = {
 
   toJSON(message: MsgMint): unknown {
     const obj: any = {};
-    message.address !== undefined && (obj.address = message.address);
+    message.creator !== undefined && (obj.creator = message.creator);
     message.class_id !== undefined && (obj.class_id = message.class_id);
     return obj;
   },
 
   fromPartial(object: DeepPartial<MsgMint>): MsgMint {
     const message = { ...baseMsgMint } as MsgMint;
-    if (object.address !== undefined && object.address !== null) {
-      message.address = object.address;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
     } else {
-      message.address = "";
+      message.creator = "";
     }
     if (object.class_id !== undefined && object.class_id !== null) {
       message.class_id = object.class_id;
@@ -98,12 +100,18 @@ export const MsgMint = {
   },
 };
 
-const baseMsgMintResponse: object = { token_id: "" };
+const baseMsgMintResponse: object = { class_id: "", token_id: "", owner: "" };
 
 export const MsgMintResponse = {
   encode(message: MsgMintResponse, writer: Writer = Writer.create()): Writer {
+    if (message.class_id !== "") {
+      writer.uint32(10).string(message.class_id);
+    }
     if (message.token_id !== "") {
-      writer.uint32(10).string(message.token_id);
+      writer.uint32(18).string(message.token_id);
+    }
+    if (message.owner !== "") {
+      writer.uint32(26).string(message.owner);
     }
     return writer;
   },
@@ -116,7 +124,13 @@ export const MsgMintResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          message.class_id = reader.string();
+          break;
+        case 2:
           message.token_id = reader.string();
+          break;
+        case 3:
+          message.owner = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -128,26 +142,48 @@ export const MsgMintResponse = {
 
   fromJSON(object: any): MsgMintResponse {
     const message = { ...baseMsgMintResponse } as MsgMintResponse;
+    if (object.class_id !== undefined && object.class_id !== null) {
+      message.class_id = String(object.class_id);
+    } else {
+      message.class_id = "";
+    }
     if (object.token_id !== undefined && object.token_id !== null) {
       message.token_id = String(object.token_id);
     } else {
       message.token_id = "";
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = String(object.owner);
+    } else {
+      message.owner = "";
     }
     return message;
   },
 
   toJSON(message: MsgMintResponse): unknown {
     const obj: any = {};
+    message.class_id !== undefined && (obj.class_id = message.class_id);
     message.token_id !== undefined && (obj.token_id = message.token_id);
+    message.owner !== undefined && (obj.owner = message.owner);
     return obj;
   },
 
   fromPartial(object: DeepPartial<MsgMintResponse>): MsgMintResponse {
     const message = { ...baseMsgMintResponse } as MsgMintResponse;
+    if (object.class_id !== undefined && object.class_id !== null) {
+      message.class_id = object.class_id;
+    } else {
+      message.class_id = "";
+    }
     if (object.token_id !== undefined && object.token_id !== null) {
       message.token_id = object.token_id;
     } else {
       message.token_id = "";
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    } else {
+      message.owner = "";
     }
     return message;
   },

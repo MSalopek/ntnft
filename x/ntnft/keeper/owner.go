@@ -48,7 +48,7 @@ func (k Keeper) RemoveOwner(
 }
 
 // GetAllOwner returns all owner
-func (k Keeper) GetAllOwners(ctx sdk.Context) (list []types.Owner) {
+func (k Keeper) GetAllOwner(ctx sdk.Context) (list []types.Owner) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OwnerKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 

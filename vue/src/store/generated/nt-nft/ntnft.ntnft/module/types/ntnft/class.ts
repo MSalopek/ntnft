@@ -1,28 +1,37 @@
 /* eslint-disable */
+import { NtNft } from "../ntnft/nt_nft";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "ntnft.ntnft";
 
 export interface Collection {
-  token_ids: string[];
+  tokens: NtNft[];
 }
 
 export interface Class {
   index: string;
+  /** class name */
   name: string;
+  /** creator's account address */
   creator: string;
+  /** off-chain storage uri */
   uri: string;
+  /** off-chain storage uri hash */
   uriHash: string;
+  /** arbitrary data */
   data: string;
-  token_ids: Collection | undefined;
+  /** min price for minting tokens of this class */
+  price: string;
+  /** tokens minted thus far */
+  tokens: NtNft[];
 }
 
-const baseCollection: object = { token_ids: "" };
+const baseCollection: object = {};
 
 export const Collection = {
   encode(message: Collection, writer: Writer = Writer.create()): Writer {
-    for (const v of message.token_ids) {
-      writer.uint32(10).string(v!);
+    for (const v of message.tokens) {
+      NtNft.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -31,12 +40,12 @@ export const Collection = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseCollection } as Collection;
-    message.token_ids = [];
+    message.tokens = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.token_ids.push(reader.string());
+          message.tokens.push(NtNft.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -48,10 +57,10 @@ export const Collection = {
 
   fromJSON(object: any): Collection {
     const message = { ...baseCollection } as Collection;
-    message.token_ids = [];
-    if (object.token_ids !== undefined && object.token_ids !== null) {
-      for (const e of object.token_ids) {
-        message.token_ids.push(String(e));
+    message.tokens = [];
+    if (object.tokens !== undefined && object.tokens !== null) {
+      for (const e of object.tokens) {
+        message.tokens.push(NtNft.fromJSON(e));
       }
     }
     return message;
@@ -59,20 +68,20 @@ export const Collection = {
 
   toJSON(message: Collection): unknown {
     const obj: any = {};
-    if (message.token_ids) {
-      obj.token_ids = message.token_ids.map((e) => e);
+    if (message.tokens) {
+      obj.tokens = message.tokens.map((e) => (e ? NtNft.toJSON(e) : undefined));
     } else {
-      obj.token_ids = [];
+      obj.tokens = [];
     }
     return obj;
   },
 
   fromPartial(object: DeepPartial<Collection>): Collection {
     const message = { ...baseCollection } as Collection;
-    message.token_ids = [];
-    if (object.token_ids !== undefined && object.token_ids !== null) {
-      for (const e of object.token_ids) {
-        message.token_ids.push(e);
+    message.tokens = [];
+    if (object.tokens !== undefined && object.tokens !== null) {
+      for (const e of object.tokens) {
+        message.tokens.push(NtNft.fromPartial(e));
       }
     }
     return message;
@@ -86,6 +95,7 @@ const baseClass: object = {
   uri: "",
   uriHash: "",
   data: "",
+  price: "",
 };
 
 export const Class = {
@@ -108,8 +118,11 @@ export const Class = {
     if (message.data !== "") {
       writer.uint32(50).string(message.data);
     }
-    if (message.token_ids !== undefined) {
-      Collection.encode(message.token_ids, writer.uint32(58).fork()).ldelim();
+    if (message.price !== "") {
+      writer.uint32(58).string(message.price);
+    }
+    for (const v of message.tokens) {
+      NtNft.encode(v!, writer.uint32(66).fork()).ldelim();
     }
     return writer;
   },
@@ -118,6 +131,7 @@ export const Class = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseClass } as Class;
+    message.tokens = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -140,7 +154,10 @@ export const Class = {
           message.data = reader.string();
           break;
         case 7:
-          message.token_ids = Collection.decode(reader, reader.uint32());
+          message.price = reader.string();
+          break;
+        case 8:
+          message.tokens.push(NtNft.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -152,6 +169,7 @@ export const Class = {
 
   fromJSON(object: any): Class {
     const message = { ...baseClass } as Class;
+    message.tokens = [];
     if (object.index !== undefined && object.index !== null) {
       message.index = String(object.index);
     } else {
@@ -182,10 +200,15 @@ export const Class = {
     } else {
       message.data = "";
     }
-    if (object.token_ids !== undefined && object.token_ids !== null) {
-      message.token_ids = Collection.fromJSON(object.token_ids);
+    if (object.price !== undefined && object.price !== null) {
+      message.price = String(object.price);
     } else {
-      message.token_ids = undefined;
+      message.price = "";
+    }
+    if (object.tokens !== undefined && object.tokens !== null) {
+      for (const e of object.tokens) {
+        message.tokens.push(NtNft.fromJSON(e));
+      }
     }
     return message;
   },
@@ -198,15 +221,18 @@ export const Class = {
     message.uri !== undefined && (obj.uri = message.uri);
     message.uriHash !== undefined && (obj.uriHash = message.uriHash);
     message.data !== undefined && (obj.data = message.data);
-    message.token_ids !== undefined &&
-      (obj.token_ids = message.token_ids
-        ? Collection.toJSON(message.token_ids)
-        : undefined);
+    message.price !== undefined && (obj.price = message.price);
+    if (message.tokens) {
+      obj.tokens = message.tokens.map((e) => (e ? NtNft.toJSON(e) : undefined));
+    } else {
+      obj.tokens = [];
+    }
     return obj;
   },
 
   fromPartial(object: DeepPartial<Class>): Class {
     const message = { ...baseClass } as Class;
+    message.tokens = [];
     if (object.index !== undefined && object.index !== null) {
       message.index = object.index;
     } else {
@@ -237,10 +263,15 @@ export const Class = {
     } else {
       message.data = "";
     }
-    if (object.token_ids !== undefined && object.token_ids !== null) {
-      message.token_ids = Collection.fromPartial(object.token_ids);
+    if (object.price !== undefined && object.price !== null) {
+      message.price = object.price;
     } else {
-      message.token_ids = undefined;
+      message.price = "";
+    }
+    if (object.tokens !== undefined && object.tokens !== null) {
+      for (const e of object.tokens) {
+        message.tokens.push(NtNft.fromPartial(e));
+      }
     }
     return message;
   },

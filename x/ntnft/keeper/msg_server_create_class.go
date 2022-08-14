@@ -2,7 +2,7 @@ package keeper
 
 import (
 	"context"
-	"encoding/binary"
+	"fmt"
 
 	"nt-nft/x/ntnft/types"
 
@@ -19,11 +19,10 @@ func (k msgServer) CreateClass(goCtx context.Context, msg *types.MsgCreateClass)
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	count := k.GetClassCount(ctx)
-	key := make([]byte, 8)
-	binary.BigEndian.PutUint64(key, count)
+	key := fmt.Sprintf("%d", count)
 
 	cls := types.Class{
-		Index:   string(key),
+		Index:   key,
 		Name:    msg.Name,
 		Creator: msg.Creator,
 		Uri:     msg.Uri,
@@ -36,6 +35,6 @@ func (k msgServer) CreateClass(goCtx context.Context, msg *types.MsgCreateClass)
 	k.SetClassCount(ctx, count+1)
 	return &types.MsgCreateClassResponse{
 		Creator: msg.Creator,
-		ClassId: string(key),
+		ClassId: key,
 	}, nil
 }
