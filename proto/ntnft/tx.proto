@@ -18,7 +18,9 @@ message MsgMint {
 }
 
 message MsgMintResponse {
-  string token_id = 1;
+  string class_id = 1;
+  string token_id = 2;
+  string owner = 3;
 }
 
 message MsgCreateClass {
