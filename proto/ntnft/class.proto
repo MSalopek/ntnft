@@ -11,12 +11,26 @@ message Collection {
 
 message Class {
   string index = 1; 
+
+  // class name
   string name = 2; 
+
+  // creator's account address
   string creator = 3;
+
+  // off-chain storage uri
   string uri = 4; 
+
+  // off-chain storage uri hash
   string uriHash = 5; 
+  
+  // arbitrary data
   string data = 6;
 
-  Collection token_ids = 7;
+  // min price for minting tokens of this class
+  string price = 7;
+
+  // tokens minted thus far
+  repeated NtNft tokens = 8;
 }
 
