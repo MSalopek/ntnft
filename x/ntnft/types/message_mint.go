@@ -42,5 +42,9 @@ func (msg *MsgMint) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	if msg.ClassId == "" {
+		return sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "invalid class id")
+	}
 	return nil
 }

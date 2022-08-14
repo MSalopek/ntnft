@@ -1,9 +1,11 @@
 package keeper
 
 import (
+	"encoding/binary"
+	"nt-nft/x/ntnft/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"nt-nft/x/ntnft/types"
 )
 
 // SetClass set a specific class in the store from its index
@@ -34,18 +36,6 @@ func (k Keeper) GetClass(
 	return val, true
 }
 
-// RemoveClass removes a class from the store
-func (k Keeper) RemoveClass(
-	ctx sdk.Context,
-	index string,
-
-) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ClassKeyPrefix))
-	store.Delete(types.ClassKey(
-		index,
-	))
-}
-
 // GetAllClass returns all class
 func (k Keeper) GetAllClass(ctx sdk.Context) (list []types.Class) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.ClassKeyPrefix))
@@ -60,4 +50,31 @@ func (k Keeper) GetAllClass(ctx sdk.Context) (list []types.Class) {
 	}
 
 	return
+}
+
+// GetClassCount returns current class count as uint64
+func (k Keeper) GetClassCount(ctx sdk.Context) uint64 {
+	byteKey := []byte(types.ClassCountPrefix)
+	store := prefix.NewStore(
+		ctx.KVStore(k.storeKey),
+		byteKey)
+
+	count := store.Get(byteKey)
+
+	if count == nil {
+		return 0
+	}
+
+	return binary.BigEndian.Uint64(count)
+}
+
+// SetClassCount sets new class counter
+func (k Keeper) SetClassCount(ctx sdk.Context, count uint64) {
+	byteKey := []byte(types.ClassCountPrefix)
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), byteKey)
+
+	newCount := make([]byte, 8)
+	binary.BigEndian.PutUint64(newCount, count)
+
+	store.Set(byteKey, newCount)
 }

@@ -23,7 +23,7 @@ func (k msgServer) Mint(goCtx context.Context, msg *types.MsgMint) (*types.MsgMi
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "ClassID does not exist")
 	}
 
-	// should panic if this cannot be parsed
+	// TODO: should panic if this cannot be parsed
 	price, _ := sdk.ParseCoinsNormalized(class.Price)
 	creator, _ := sdk.AccAddressFromBech32(class.Creator)
 	requester, _ := sdk.AccAddressFromBech32(msg.Creator)
@@ -57,7 +57,10 @@ func (k msgServer) Mint(goCtx context.Context, msg *types.MsgMint) (*types.MsgMi
 	}
 
 	// get all owner nfts and add newly minted
-	// NOTE: unsure about this pattern
+	//
+	// NOTE: unsure about the write semantics here...
+	// maybe I should copy the entire owner, append to copy and
+	// set the copy as the new value
 	owner, _ := k.GetOwner(ctx, msg.Creator)
 	col := types.OwnerCollection{
 		ClassId: msg.ClassId,

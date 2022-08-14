@@ -46,5 +46,9 @@ func (msg *MsgCreateClass) ValidateBasic() error {
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
 	}
+
+	if msg.Name == "" {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "class name must be provided")
+	}
 	return nil
 }
