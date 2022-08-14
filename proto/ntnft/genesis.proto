@@ -3,6 +3,7 @@ package ntnft.ntnft;
 
 import "gogoproto/gogo.proto";
 import "ntnft/params.proto";
+import "ntnft/owner.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "nt-nft/x/ntnft/types";
@@ -10,5 +11,6 @@ option go_package = "nt-nft/x/ntnft/types";
 // GenesisState defines the ntnft module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated Owner ownerList = 2 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

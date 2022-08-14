@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "ntnft/params.proto";
+import "ntnft/owner.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "nt-nft/x/ntnft/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/nt-nft/ntnft/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a Owner by index.
+	rpc Owner(QueryGetOwnerRequest) returns (QueryGetOwnerResponse) {
+		option (google.api.http).get = "/nt-nft/ntnft/owner/{index}";
+	}
+
+	// Queries a list of Owner items.
+	rpc OwnerAll(QueryAllOwnerRequest) returns (QueryAllOwnerResponse) {
+		option (google.api.http).get = "/nt-nft/ntnft/owner";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,24 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetOwnerRequest {
+	  string index = 1;
+
+}
+
+message QueryGetOwnerResponse {
+	Owner owner = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllOwnerRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllOwnerResponse {
+	repeated Owner owner = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3
