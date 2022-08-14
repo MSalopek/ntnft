@@ -4,12 +4,13 @@ import (
 	"strconv"
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 	keepertest "nt-nft/testutil/keeper"
 	"nt-nft/testutil/nullify"
 	"nt-nft/x/ntnft/keeper"
 	"nt-nft/x/ntnft/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 // Prevent strconv unused error
@@ -58,6 +59,6 @@ func TestOwnerGetAll(t *testing.T) {
 	items := createNOwner(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
-		nullify.Fill(keeper.GetAllOwner(ctx)),
+		nullify.Fill(keeper.GetAllOwners(ctx)),
 	)
 }

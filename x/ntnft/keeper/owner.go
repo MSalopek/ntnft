@@ -1,9 +1,10 @@
 package keeper
 
 import (
+	"nt-nft/x/ntnft/types"
+
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"nt-nft/x/ntnft/types"
 )
 
 // SetOwner set a specific owner in the store from its index
@@ -47,7 +48,7 @@ func (k Keeper) RemoveOwner(
 }
 
 // GetAllOwner returns all owner
-func (k Keeper) GetAllOwner(ctx sdk.Context) (list []types.Owner) {
+func (k Keeper) GetAllOwners(ctx sdk.Context) (list []types.Owner) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OwnerKeyPrefix))
 	iterator := sdk.KVStorePrefixIterator(store, []byte{})
 

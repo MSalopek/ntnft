@@ -62,14 +62,20 @@ func (k msgServer) Mint(goCtx context.Context, msg *types.MsgMint) (*types.MsgMi
 	// maybe I should copy the entire owner, append to copy and
 	// set the copy as the new value
 	owner, _ := k.GetOwner(ctx, msg.Creator)
-	col := types.OwnerCollection{
+	ownerColl := types.OwnerCollection{
 		ClassId: msg.ClassId,
 		Token:   &token,
 	}
-	owner.Collection = append(owner.Collection, &col)
+	owner.Collection = append(owner.Collection, &ownerColl)
 
+	class.Tokens = append(class.Tokens, &token)
+
+	// add new token
 	k.SetNtNft(ctx, token)
+	// add new token to owner collection
 	k.SetOwner(ctx, owner)
+	// add new token to class collection
+	k.SetClass(ctx, class)
 	return &types.MsgMintResponse{
 		ClassId: class.Index,
 		TokenId: token.Index,

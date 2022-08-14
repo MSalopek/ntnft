@@ -36,6 +36,6 @@ func (k msgServer) CreateClass(goCtx context.Context, msg *types.MsgCreateClass)
 	k.SetClassCount(ctx, count+1)
 	return &types.MsgCreateClassResponse{
 		Creator: msg.Creator,
-		ClassId: string(count),
+		ClassId: string(key),
 	}, nil
 }
