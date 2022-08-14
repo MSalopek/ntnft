@@ -1,0 +1,14 @@
+syntax = "proto3";
+package ntnft.ntnft;
+
+option go_package = "nt-nft/x/ntnft/types";
+
+message NtNft {
+  string index = 1; 
+  string classId = 2; 
+  string owner = 3; 
+  string uri = 4; 
+  string uriHash = 5; 
+  string data = 6; 
+}
+

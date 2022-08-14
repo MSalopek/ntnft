@@ -9,18 +9,78 @@
  * ---------------------------------------------------------------
  */
 
-export type NtnftMsgMintResponse = object;
+export interface NtnftClass {
+  index?: string;
+  name?: string;
+  creator?: string;
+  uri?: string;
+  uriHash?: string;
+  data?: string;
+  token_ids?: NtnftCollection;
+}
+
+export interface NtnftCollection {
+  token_ids?: string[];
+}
+
+export interface NtnftMsgCreateClassResponse {
+  creator?: string;
+  class_id?: string;
+}
+
+export interface NtnftMsgMintResponse {
+  token_id?: string;
+}
+
+export interface NtnftNtNft {
+  index?: string;
+  classId?: string;
+  owner?: string;
+  uri?: string;
+  uriHash?: string;
+  data?: string;
+}
 
 export interface NtnftOwner {
   index?: string;
   address?: string;
-  collection?: string;
+  collection?: NtnftCollection;
 }
 
 /**
  * Params defines the parameters for the module.
  */
 export type NtnftParams = object;
+
+export interface NtnftQueryAllClassResponse {
+  class?: NtnftClass[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface NtnftQueryAllNtNftResponse {
+  ntNft?: NtnftNtNft[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
 
 export interface NtnftQueryAllOwnerResponse {
   owner?: NtnftOwner[];
@@ -35,6 +95,14 @@ export interface NtnftQueryAllOwnerResponse {
    *  }
    */
   pagination?: V1Beta1PageResponse;
+}
+
+export interface NtnftQueryGetClassResponse {
+  class?: NtnftClass;
+}
+
+export interface NtnftQueryGetNtNftResponse {
+  ntNft?: NtnftNtNft;
 }
 
 export interface NtnftQueryGetOwnerResponse {
@@ -308,10 +376,92 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title ntnft/genesis.proto
+ * @title ntnft/class.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryClassAll
+   * @summary Queries a list of Class items.
+   * @request GET:/nt-nft/ntnft/class
+   */
+  queryClassAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<NtnftQueryAllClassResponse, RpcStatus>({
+      path: `/nt-nft/ntnft/class`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryClass
+   * @summary Queries a Class by index.
+   * @request GET:/nt-nft/ntnft/class/{index}
+   */
+  queryClass = (index: string, params: RequestParams = {}) =>
+    this.request<NtnftQueryGetClassResponse, RpcStatus>({
+      path: `/nt-nft/ntnft/class/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryNtNftAll
+   * @summary Queries a list of NtNft items.
+   * @request GET:/nt-nft/ntnft/nt_nft
+   */
+  queryNtNftAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<NtnftQueryAllNtNftResponse, RpcStatus>({
+      path: `/nt-nft/ntnft/nt_nft`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryNtNft
+   * @summary Queries a NtNft by index.
+   * @request GET:/nt-nft/ntnft/nt_nft/{index}
+   */
+  queryNtNft = (index: string, params: RequestParams = {}) =>
+    this.request<NtnftQueryGetNtNftResponse, RpcStatus>({
+      path: `/nt-nft/ntnft/nt_nft/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

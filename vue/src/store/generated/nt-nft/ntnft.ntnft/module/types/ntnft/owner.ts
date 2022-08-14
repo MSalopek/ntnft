@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { Collection } from "../ntnft/class";
 import { Writer, Reader } from "protobufjs/minimal";
 
 export const protobufPackage = "ntnft.ntnft";
@@ -6,10 +7,10 @@ export const protobufPackage = "ntnft.ntnft";
 export interface Owner {
   index: string;
   address: string;
-  collection: string;
+  collection: Collection | undefined;
 }
 
-const baseOwner: object = { index: "", address: "", collection: "" };
+const baseOwner: object = { index: "", address: "" };
 
 export const Owner = {
   encode(message: Owner, writer: Writer = Writer.create()): Writer {
@@ -19,8 +20,8 @@ export const Owner = {
     if (message.address !== "") {
       writer.uint32(18).string(message.address);
     }
-    if (message.collection !== "") {
-      writer.uint32(26).string(message.collection);
+    if (message.collection !== undefined) {
+      Collection.encode(message.collection, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -39,7 +40,7 @@ export const Owner = {
           message.address = reader.string();
           break;
         case 3:
-          message.collection = reader.string();
+          message.collection = Collection.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -62,9 +63,9 @@ export const Owner = {
       message.address = "";
     }
     if (object.collection !== undefined && object.collection !== null) {
-      message.collection = String(object.collection);
+      message.collection = Collection.fromJSON(object.collection);
     } else {
-      message.collection = "";
+      message.collection = undefined;
     }
     return message;
   },
@@ -73,7 +74,10 @@ export const Owner = {
     const obj: any = {};
     message.index !== undefined && (obj.index = message.index);
     message.address !== undefined && (obj.address = message.address);
-    message.collection !== undefined && (obj.collection = message.collection);
+    message.collection !== undefined &&
+      (obj.collection = message.collection
+        ? Collection.toJSON(message.collection)
+        : undefined);
     return obj;
   },
 
@@ -90,9 +94,9 @@ export const Owner = {
       message.address = "";
     }
     if (object.collection !== undefined && object.collection !== null) {
-      message.collection = object.collection;
+      message.collection = Collection.fromPartial(object.collection);
     } else {
-      message.collection = "";
+      message.collection = undefined;
     }
     return message;
   },

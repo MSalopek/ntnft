@@ -11,6 +11,8 @@ const DefaultIndex uint64 = 1
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
 		OwnerList: []Owner{},
+		ClassList: []Class{},
+		NtNftList: []NtNft{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -28,6 +30,26 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for owner")
 		}
 		ownerIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in class
+	classIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.ClassList {
+		index := string(ClassKey(elem.Index))
+		if _, ok := classIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for class")
+		}
+		classIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in ntNft
+	ntNftIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.NtNftList {
+		index := string(NtNftKey(elem.Index))
+		if _, ok := ntNftIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for ntNft")
+		}
+		ntNftIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

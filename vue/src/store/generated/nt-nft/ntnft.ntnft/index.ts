@@ -1,10 +1,13 @@
 import { txClient, queryClient, MissingWalletError , registry} from './module'
 
+import { Collection } from "./module/types/ntnft/class"
+import { Class } from "./module/types/ntnft/class"
+import { NtNft } from "./module/types/ntnft/nt_nft"
 import { Owner } from "./module/types/ntnft/owner"
 import { Params } from "./module/types/ntnft/params"
 
 
-export { Owner, Params };
+export { Collection, Class, NtNft, Owner, Params };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -45,8 +48,15 @@ const getDefaultState = () => {
 				Params: {},
 				Owner: {},
 				OwnerAll: {},
+				Class: {},
+				ClassAll: {},
+				NtNft: {},
+				NtNftAll: {},
 				
 				_Structure: {
+						Collection: getStructure(Collection.fromPartial({})),
+						Class: getStructure(Class.fromPartial({})),
+						NtNft: getStructure(NtNft.fromPartial({})),
 						Owner: getStructure(Owner.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						
@@ -94,6 +104,30 @@ export default {
 						(<any> params).query=null
 					}
 			return state.OwnerAll[JSON.stringify(params)] ?? {}
+		},
+				getClass: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.Class[JSON.stringify(params)] ?? {}
+		},
+				getClassAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.ClassAll[JSON.stringify(params)] ?? {}
+		},
+				getNtNft: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.NtNft[JSON.stringify(params)] ?? {}
+		},
+				getNtNftAll: (state) => (params = { params: {}}) => {
+					if (!(<any> params).query) {
+						(<any> params).query=null
+					}
+			return state.NtNftAll[JSON.stringify(params)] ?? {}
 		},
 				
 		getTypeStructure: (state) => (type) => {
@@ -199,6 +233,102 @@ export default {
 		},
 		
 		
+		
+		
+		 		
+		
+		
+		async QueryClass({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryClass( key.index)).data
+				
+					
+				commit('QUERY', { query: 'Class', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryClass', payload: { options: { all }, params: {...key},query }})
+				return getters['getClass']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryClass API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryClassAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryClassAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryClassAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'ClassAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryClassAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getClassAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryClassAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryNtNft({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryNtNft( key.index)).data
+				
+					
+				commit('QUERY', { query: 'NtNft', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryNtNft', payload: { options: { all }, params: {...key},query }})
+				return getters['getNtNft']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryNtNft API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
+		
+		
+		 		
+		
+		
+		async QueryNtNftAll({ commit, rootGetters, getters }, { options: { subscribe, all} = { subscribe:false, all:false}, params, query=null }) {
+			try {
+				const key = params ?? {};
+				const queryClient=await initQueryClient(rootGetters)
+				let value= (await queryClient.queryNtNftAll(query)).data
+				
+					
+				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
+					let next_values=(await queryClient.queryNtNftAll({...query, 'pagination.key':(<any> value).pagination.next_key})).data
+					value = mergeResults(value, next_values);
+				}
+				commit('QUERY', { query: 'NtNftAll', key: { params: {...key}, query}, value })
+				if (subscribe) commit('SUBSCRIBE', { action: 'QueryNtNftAll', payload: { options: { all }, params: {...key},query }})
+				return getters['getNtNftAll']( { params: {...key}, query}) ?? {}
+			} catch (e) {
+				throw new Error('QueryClient:QueryNtNftAll API Node Unavailable. Could not perform query: ' + e.message)
+				
+			}
+		},
+		
+		
 		async sendMsgMint({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -214,6 +344,21 @@ export default {
 				}
 			}
 		},
+		async sendMsgCreateClass({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateClass(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateClass:Init Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new Error('TxClient:MsgCreateClass:Send Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		
 		async MsgMint({ rootGetters }, { value }) {
 			try {
@@ -225,6 +370,19 @@ export default {
 					throw new Error('TxClient:MsgMint:Init Could not initialize signing client. Wallet is required.')
 				} else{
 					throw new Error('TxClient:MsgMint:Create Could not create message: ' + e.message)
+				}
+			}
+		},
+		async MsgCreateClass({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgCreateClass(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new Error('TxClient:MsgCreateClass:Init Could not initialize signing client. Wallet is required.')
+				} else{
+					throw new Error('TxClient:MsgCreateClass:Create Could not create message: ' + e.message)
 				}
 			}
 		},

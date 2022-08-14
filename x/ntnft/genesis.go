@@ -13,6 +13,14 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.OwnerList {
 		k.SetOwner(ctx, elem)
 	}
+	// Set all the class
+	for _, elem := range genState.ClassList {
+		k.SetClass(ctx, elem)
+	}
+	// Set all the ntNft
+	for _, elem := range genState.NtNftList {
+		k.SetNtNft(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -23,6 +31,8 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.Params = k.GetParams(ctx)
 
 	genesis.OwnerList = k.GetAllOwner(ctx)
+	genesis.ClassList = k.GetAllClass(ctx)
+	genesis.NtNftList = k.GetAllNtNft(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

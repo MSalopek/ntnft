@@ -6,6 +6,8 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "ntnft/params.proto";
 import "ntnft/owner.proto";
+import "ntnft/class.proto";
+import "ntnft/nt_nft.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "nt-nft/x/ntnft/types";
@@ -24,6 +26,26 @@ service Query {
 	// Queries a list of Owner items.
 	rpc OwnerAll(QueryAllOwnerRequest) returns (QueryAllOwnerResponse) {
 		option (google.api.http).get = "/nt-nft/ntnft/owner";
+	}
+
+// Queries a Class by index.
+	rpc Class(QueryGetClassRequest) returns (QueryGetClassResponse) {
+		option (google.api.http).get = "/nt-nft/ntnft/class/{index}";
+	}
+
+	// Queries a list of Class items.
+	rpc ClassAll(QueryAllClassRequest) returns (QueryAllClassResponse) {
+		option (google.api.http).get = "/nt-nft/ntnft/class";
+	}
+
+// Queries a NtNft by index.
+	rpc NtNft(QueryGetNtNftRequest) returns (QueryGetNtNftResponse) {
+		option (google.api.http).get = "/nt-nft/ntnft/nt_nft/{index}";
+	}
+
+	// Queries a list of NtNft items.
+	rpc NtNftAll(QueryAllNtNftRequest) returns (QueryAllNtNftResponse) {
+		option (google.api.http).get = "/nt-nft/ntnft/nt_nft";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -53,6 +75,42 @@ message QueryAllOwnerRequest {
 
 message QueryAllOwnerResponse {
 	repeated Owner owner = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetClassRequest {
+	  string index = 1;
+
+}
+
+message QueryGetClassResponse {
+	Class class = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllClassRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllClassResponse {
+	repeated Class class = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetNtNftRequest {
+	  string index = 1;
+
+}
+
+message QueryGetNtNftResponse {
+	NtNft ntNft = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllNtNftRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllNtNftResponse {
+	repeated NtNft ntNft = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

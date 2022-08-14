@@ -1,6 +1,8 @@
 syntax = "proto3";
 package ntnft.ntnft;
 
+import "ntnft/class.proto";
+
 option go_package = "nt-nft/x/ntnft/types";
 
 message Owner {
@@ -9,6 +11,3 @@ message Owner {
   Collection collection = 3; 
 }
 
-message Collection {
-  repeated string token_ids = 1;
-}

@@ -30,6 +30,22 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
+				ClassList: []types.Class{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
+				NtNftList: []types.NtNft{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -38,6 +54,34 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated owner",
 			genState: &types.GenesisState{
 				OwnerList: []types.Owner{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated class",
+			genState: &types.GenesisState{
+				ClassList: []types.Class{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated ntNft",
+			genState: &types.GenesisState{
+				NtNftList: []types.NtNft{
 					{
 						Index: "0",
 					},

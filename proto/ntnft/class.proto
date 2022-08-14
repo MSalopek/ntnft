@@ -1,0 +1,22 @@
+syntax = "proto3";
+package ntnft.ntnft;
+
+import "ntnft/nt_nft.proto";
+
+option go_package = "nt-nft/x/ntnft/types";
+
+message Collection {
+  repeated NtNft tokens = 1;
+}
+
+message Class {
+  string index = 1; 
+  string name = 2; 
+  string creator = 3;
+  string uri = 4; 
+  string uriHash = 5; 
+  string data = 6;
+
+  Collection token_ids = 7;
+}
+
