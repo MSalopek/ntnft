@@ -13,7 +13,7 @@ service Msg {
 }
 
 message MsgMint {
-  string address = 1;
+  string creator = 1;
   string class_id = 2;
 }
 

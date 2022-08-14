@@ -9,10 +9,10 @@ const TypeMsgMint = "mint"
 
 var _ sdk.Msg = &MsgMint{}
 
-func NewMsgMint(creator string, account string) *MsgMint {
+func NewMsgMint(creator string, classId string) *MsgMint {
 	return &MsgMint{
 		Creator: creator,
-		Account: account,
+		ClassId: classId,
 	}
 }
 
