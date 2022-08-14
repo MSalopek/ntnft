@@ -6,6 +6,9 @@ option go_package = "nt-nft/x/ntnft/types";
 message Owner {
   string index = 1; 
   string address = 2; 
-  string collection = 3; 
+  Collection collection = 3; 
 }
 
+message Collection {
+  repeated string token_ids = 1;
+}
