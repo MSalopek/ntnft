@@ -11,7 +11,18 @@ import (
 // Returns false when:
 //    - ownerAddr is not registered
 //    - ownerAddr does not own token with classId
+// Returns true when ownerAddr has token with classId.
 func (k Keeper) OwnerHasClass(ctx sdk.Context, ownerAddr, classId string) bool {
+	o, found := k.GetOwner(ctx, ownerAddr)
+	if !found {
+		return false
+	}
+
+	for _, v := range o.Collection {
+		if v.ClassId == classId {
+			return true
+		}
+	}
 	return false
 }
 
