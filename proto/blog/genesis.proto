@@ -2,6 +2,7 @@ syntax = "proto3";
 package blog.blog;
 
 import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
 import "blog/params.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
@@ -11,4 +12,7 @@ option go_package = "blog/x/blog/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
+
+  // NTNFT classes present at genesis
+  repeated google.protobuf.Any NtNftClass = 2;
 }

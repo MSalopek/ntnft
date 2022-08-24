@@ -1,7 +1,7 @@
 package keeper
 
 import (
-	"blog/x/blog/types"
+	"nt-nft/x/blog/types"
 )
 
 type msgServer struct {

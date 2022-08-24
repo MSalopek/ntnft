@@ -3,7 +3,8 @@ package types_test
 import (
 	"testing"
 
-	"blog/x/blog/types"
+	"nt-nft/x/blog/types"
+
 	"github.com/stretchr/testify/require"
 )
 

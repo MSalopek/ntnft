@@ -5,8 +5,9 @@ import (
 	"testing"
 
 	keepertest "blog/testutil/keeper"
-	"blog/x/blog/keeper"
-	"blog/x/blog/types"
+	"nt-nft/x/blog/keeper"
+	"nt-nft/x/blog/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 

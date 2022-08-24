@@ -5,8 +5,9 @@ import (
 
 	keepertest "blog/testutil/keeper"
 	"blog/testutil/nullify"
-	"blog/x/blog"
-	"blog/x/blog/types"
+	"nt-nft/x/blog"
+	"nt-nft/x/blog/types"
+
 	"github.com/stretchr/testify/require"
 )
 

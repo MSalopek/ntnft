@@ -1,9 +1,10 @@
 package ntnft
 
 import (
-	sdk "github.com/cosmos/cosmos-sdk/types"
 	"nt-nft/x/ntnft/keeper"
 	"nt-nft/x/ntnft/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis

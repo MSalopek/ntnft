@@ -4,8 +4,9 @@ import (
 	"math/rand"
 
 	"blog/testutil/sample"
-	blogsimulation "blog/x/blog/simulation"
-	"blog/x/blog/types"
+	blogsimulation "nt-nft/x/blog/simulation"
+	"nt-nft/x/blog/types"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"

@@ -13,9 +13,9 @@ import (
 
 	abci "github.com/tendermint/tendermint/abci/types"
 
-	"blog/x/blog/client/cli"
-	"blog/x/blog/keeper"
-	"blog/x/blog/types"
+	"nt-nft/x/blog/client/cli"
+	"nt-nft/x/blog/keeper"
+	"nt-nft/x/blog/types"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/codec"

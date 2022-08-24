@@ -4,7 +4,8 @@ import (
 	"testing"
 
 	testkeeper "blog/testutil/keeper"
-	"blog/x/blog/types"
+	"nt-nft/x/blog/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/stretchr/testify/require"
 )

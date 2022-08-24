@@ -3,8 +3,9 @@ package simulation
 import (
 	"math/rand"
 
-	"blog/x/blog/keeper"
-	"blog/x/blog/types"
+	"nt-nft/x/blog/keeper"
+	"nt-nft/x/blog/types"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"

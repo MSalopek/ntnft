@@ -3,7 +3,8 @@ package keeper
 import (
 	"context"
 
-	"blog/x/blog/types"
+	"nt-nft/x/blog/types"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

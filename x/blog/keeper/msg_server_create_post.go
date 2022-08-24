@@ -3,7 +3,7 @@ package keeper
 import (
 	"context"
 
-	"blog/x/blog/types"
+	"nt-nft/x/blog/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
