@@ -7,6 +7,14 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
+// OwnerHasClass checks if ownerAddr has token with classId.
+// Returns false when:
+//    - ownerAddr is not registered
+//    - ownerAddr does not own token with classId
+func (k Keeper) OwnerHasClass(ctx sdk.Context, ownerAddr, classId string) bool {
+	return false
+}
+
 // SetOwner set a specific owner in the store from its index
 func (k Keeper) SetOwner(ctx sdk.Context, owner types.Owner) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.OwnerKeyPrefix))
