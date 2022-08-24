@@ -100,5 +100,3 @@ func (k Keeper) SetCount(ctx sdk.Context, count uint64) {
 
 	store.Set(byteKey, newCount)
 }
-
-func (k Keeper) EditPost(p types.Post) {}
