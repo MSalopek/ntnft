@@ -2,14 +2,10 @@ syntax = "proto3";
 package blog.blog;
 
 import "gogoproto/gogo.proto";
-import "ntnft/class.proto";
 
 option go_package = "blog/x/blog/types";
 
 // Params defines the parameters for the module.
 message Params {
   option (gogoproto.goproto_stringer) = false;
-
-  // module can have 1 pre-created NFT class
-  Class classList = 3 [(gogoproto.nullable) = false];
 }
