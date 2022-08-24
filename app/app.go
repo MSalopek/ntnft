@@ -102,7 +102,12 @@ import (
 	ntnftmodule "nt-nft/x/ntnft"
 	ntnftmodulekeeper "nt-nft/x/ntnft/keeper"
 	ntnftmoduletypes "nt-nft/x/ntnft/types"
+
 	// this line is used by starport scaffolding # stargate/app/moduleImport
+
+	blogmodule "nt-nft/x/blog"
+	blogmodulekeeper "nt-nft/x/blog/keeper"
+	blogmoduletypes "nt-nft/x/blog/types"
 )
 
 const (
@@ -157,6 +162,7 @@ var (
 		vesting.AppModuleBasic{},
 		monitoringp.AppModuleBasic{},
 		ntnftmodule.AppModuleBasic{},
+		blogmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -233,6 +239,10 @@ type App struct {
 	NtnftKeeper ntnftmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
+	// demo app blog keeper
+	// blog app depends on NtnftKeeper
+	BlogKeeper blogmodulekeeper.Keeper
+
 	// mm is the module manager
 	mm *module.Manager
 
@@ -268,6 +278,7 @@ func New(
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey, monitoringptypes.StoreKey,
 		ntnftmoduletypes.StoreKey,
+		blogmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -399,6 +410,14 @@ func New(
 	)
 	ntnftModule := ntnftmodule.NewAppModule(appCodec, app.NtnftKeeper, app.AccountKeeper, app.BankKeeper)
 
+	app.BlogKeeper = *blogmodulekeeper.NewKeeper(
+		appCodec,
+		keys[blogmoduletypes.StoreKey],
+		keys[blogmoduletypes.MemStoreKey],
+		app.GetSubspace(blogmoduletypes.ModuleName),
+	)
+	blogModule := blogmodule.NewAppModule(appCodec, app.BlogKeeper, app.AccountKeeper, app.BankKeeper, app.NtnftKeeper)
+
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -441,6 +460,7 @@ func New(
 		transferModule,
 		monitoringModule,
 		ntnftModule,
+		blogModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -469,6 +489,7 @@ func New(
 		paramstypes.ModuleName,
 		monitoringptypes.ModuleName,
 		ntnftmoduletypes.ModuleName,
+		blogmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/beginBlockers
 	)
 
@@ -493,6 +514,7 @@ func New(
 		ibctransfertypes.ModuleName,
 		monitoringptypes.ModuleName,
 		ntnftmoduletypes.ModuleName,
+		blogmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/endBlockers
 	)
 
@@ -522,6 +544,10 @@ func New(
 		feegrant.ModuleName,
 		monitoringptypes.ModuleName,
 		ntnftmoduletypes.ModuleName,
+		// NOTE:
+		// blog must be initialized after NtNft
+		blogmoduletypes.ModuleName,
+
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -547,6 +573,7 @@ func New(
 		transferModule,
 		monitoringModule,
 		ntnftModule,
+		blogModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -737,6 +764,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(ibchost.ModuleName)
 	paramsKeeper.Subspace(monitoringptypes.ModuleName)
 	paramsKeeper.Subspace(ntnftmoduletypes.ModuleName)
+	paramsKeeper.Subspace(blogmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
