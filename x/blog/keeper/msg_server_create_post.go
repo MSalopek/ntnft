@@ -17,12 +17,7 @@ func (k msgServer) CreatePost(goCtx context.Context, msg *types.MsgCreatePost) (
 		panic("auth token class not set on blog module")
 	}
 
-	ok, err := k.ntnftKeeper.OwnerHasClass(ctx, string(authClass), msg.Creator)
-	if err != nil {
-		return nil, sdkerrors.Wrap(err, "error checking owner class")
-	}
-
-	if !ok {
+	if !k.ntnftKeeper.OwnerHasClass(ctx, string(authClass), msg.Creator) {
 		if _, err := k.ntnftKeeper.MintToken(ctx,
 			string(authClass), msg.Creator); err != nil {
 			return nil, sdkerrors.Wrap(err, "error minting token for unregistered user")

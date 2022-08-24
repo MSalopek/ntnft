@@ -21,6 +21,9 @@ type BankKeeper interface {
 
 // Methods imported from ntnft
 type NtnftKeeper interface {
-	OwnerHasClass(ctx sdk.Context, classId, createAddr string) (bool, error)
+	// Check if ownerAddrs owns token with classId
+	OwnerHasClass(ctx sdk.Context, ownerAddr, classId string) bool
+
+	// Mint new token with classId and assign it to createAddr
 	MintToken(ctx sdk.Context, classId, createAddr string) (tokenTypes.NtNft, error)
 }
