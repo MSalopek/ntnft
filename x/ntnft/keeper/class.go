@@ -11,7 +11,7 @@ import (
 )
 
 // SetModuleAccountClass creates a Class with module account address as Class.Creator.
-func (k Keeper) SetModuleAccountClass(ctx sdk.Context, name, price, moduleName string) {
+func (k Keeper) SetModuleAccountClass(ctx sdk.Context, name, price, moduleName string) (types.Class, error) {
 	moduleAcc := k.accountKeeper.GetModuleAccount(ctx, moduleName)
 	if moduleAcc == nil {
 		panic(sdkerrors.Wrapf(sdkerrors.ErrUnknownAddress, "module account %s does not exist", moduleName))
@@ -22,7 +22,7 @@ func (k Keeper) SetModuleAccountClass(ctx sdk.Context, name, price, moduleName s
 
 	_, err := sdk.ParseCoinsNormalized(price)
 	if err != nil {
-		sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid coins amount %s", price)
+		return types.Class{}, sdkerrors.Wrapf(sdkerrors.ErrInvalidCoins, "invalid coins amount %s", price)
 	}
 
 	cls := types.Class{
@@ -34,6 +34,8 @@ func (k Keeper) SetModuleAccountClass(ctx sdk.Context, name, price, moduleName s
 
 	k.SetClass(ctx, cls)
 	k.SetClassCount(ctx, count+1)
+
+	return cls, nil
 }
 
 // GetAllModuleAccountClass gets all Classes where module account address is set as Class.Creator.
