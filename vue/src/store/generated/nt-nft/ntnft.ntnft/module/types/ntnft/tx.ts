@@ -28,6 +28,15 @@ export interface MsgCreateClassResponse {
   class_id: string;
 }
 
+export interface MsgCreateModuleAccountClass {
+  creator: string;
+  name: string;
+  price: string;
+  moduleName: string;
+}
+
+export interface MsgCreateModuleAccountClassResponse {}
+
 const baseMsgMint: object = { creator: "", class_id: "" };
 
 export const MsgMint = {
@@ -413,11 +422,191 @@ export const MsgCreateClassResponse = {
   },
 };
 
+const baseMsgCreateModuleAccountClass: object = {
+  creator: "",
+  name: "",
+  price: "",
+  moduleName: "",
+};
+
+export const MsgCreateModuleAccountClass = {
+  encode(
+    message: MsgCreateModuleAccountClass,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.price !== "") {
+      writer.uint32(26).string(message.price);
+    }
+    if (message.moduleName !== "") {
+      writer.uint32(34).string(message.moduleName);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateModuleAccountClass {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateModuleAccountClass,
+    } as MsgCreateModuleAccountClass;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.price = reader.string();
+          break;
+        case 4:
+          message.moduleName = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgCreateModuleAccountClass {
+    const message = {
+      ...baseMsgCreateModuleAccountClass,
+    } as MsgCreateModuleAccountClass;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name);
+    } else {
+      message.name = "";
+    }
+    if (object.price !== undefined && object.price !== null) {
+      message.price = String(object.price);
+    } else {
+      message.price = "";
+    }
+    if (object.moduleName !== undefined && object.moduleName !== null) {
+      message.moduleName = String(object.moduleName);
+    } else {
+      message.moduleName = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgCreateModuleAccountClass): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.name !== undefined && (obj.name = message.name);
+    message.price !== undefined && (obj.price = message.price);
+    message.moduleName !== undefined && (obj.moduleName = message.moduleName);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<MsgCreateModuleAccountClass>
+  ): MsgCreateModuleAccountClass {
+    const message = {
+      ...baseMsgCreateModuleAccountClass,
+    } as MsgCreateModuleAccountClass;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    if (object.price !== undefined && object.price !== null) {
+      message.price = object.price;
+    } else {
+      message.price = "";
+    }
+    if (object.moduleName !== undefined && object.moduleName !== null) {
+      message.moduleName = object.moduleName;
+    } else {
+      message.moduleName = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgCreateModuleAccountClassResponse: object = {};
+
+export const MsgCreateModuleAccountClassResponse = {
+  encode(
+    _: MsgCreateModuleAccountClassResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): MsgCreateModuleAccountClassResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseMsgCreateModuleAccountClassResponse,
+    } as MsgCreateModuleAccountClassResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgCreateModuleAccountClassResponse {
+    const message = {
+      ...baseMsgCreateModuleAccountClassResponse,
+    } as MsgCreateModuleAccountClassResponse;
+    return message;
+  },
+
+  toJSON(_: MsgCreateModuleAccountClassResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(
+    _: DeepPartial<MsgCreateModuleAccountClassResponse>
+  ): MsgCreateModuleAccountClassResponse {
+    const message = {
+      ...baseMsgCreateModuleAccountClassResponse,
+    } as MsgCreateModuleAccountClassResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   Mint(request: MsgMint): Promise<MsgMintResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateClass(request: MsgCreateClass): Promise<MsgCreateClassResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  CreateModuleAccountClass(
+    request: MsgCreateModuleAccountClass
+  ): Promise<MsgCreateModuleAccountClassResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -436,6 +625,20 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("ntnft.ntnft.Msg", "CreateClass", data);
     return promise.then((data) =>
       MsgCreateClassResponse.decode(new Reader(data))
+    );
+  }
+
+  CreateModuleAccountClass(
+    request: MsgCreateModuleAccountClass
+  ): Promise<MsgCreateModuleAccountClassResponse> {
+    const data = MsgCreateModuleAccountClass.encode(request).finish();
+    const promise = this.rpc.request(
+      "ntnft.ntnft.Msg",
+      "CreateModuleAccountClass",
+      data
+    );
+    return promise.then((data) =>
+      MsgCreateModuleAccountClassResponse.decode(new Reader(data))
     );
   }
 }

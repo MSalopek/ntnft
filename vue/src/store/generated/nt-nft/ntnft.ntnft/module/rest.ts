@@ -25,6 +25,8 @@ export interface NtnftMsgCreateClassResponse {
   class_id?: string;
 }
 
+export type NtnftMsgCreateModuleAccountClassResponse = object;
+
 export interface NtnftMsgMintResponse {
   class_id?: string;
   token_id?: string;

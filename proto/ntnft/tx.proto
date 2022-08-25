@@ -9,6 +9,7 @@ option go_package = "nt-nft/x/ntnft/types";
 service Msg {
   rpc Mint(MsgMint) returns (MsgMintResponse);
   rpc CreateClass(MsgCreateClass) returns (MsgCreateClassResponse);
+  rpc CreateModuleAccountClass(MsgCreateModuleAccountClass) returns (MsgCreateModuleAccountClassResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -35,6 +36,16 @@ message MsgCreateClass {
 message MsgCreateClassResponse {
   string creator = 1;
   string class_id = 2;
+}
+
+message MsgCreateModuleAccountClass {
+  string creator = 1;
+  string name = 2;
+  string price = 3;
+  string moduleName = 4;
+}
+
+message MsgCreateModuleAccountClassResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
