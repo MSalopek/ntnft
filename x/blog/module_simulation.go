@@ -3,7 +3,7 @@ package blog
 import (
 	"math/rand"
 
-	"blog/testutil/sample"
+	"nt-nft/testutil/sample"
 	blogsimulation "nt-nft/x/blog/simulation"
 	"nt-nft/x/blog/types"
 

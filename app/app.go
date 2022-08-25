@@ -175,7 +175,10 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
-		ntnftmoduletypes.ModuleName:    {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+
+		ntnftmoduletypes.ModuleName: {authtypes.Minter, authtypes.Burner, authtypes.Staking},
+
+		blogmoduletypes.ModuleName: nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -406,6 +409,7 @@ func New(
 		keys[ntnftmoduletypes.MemStoreKey],
 		app.GetSubspace(ntnftmoduletypes.ModuleName),
 
+		app.AccountKeeper,
 		app.BankKeeper,
 	)
 	ntnftModule := ntnftmodule.NewAppModule(appCodec, app.NtnftKeeper, app.AccountKeeper, app.BankKeeper)
@@ -415,6 +419,9 @@ func New(
 		keys[blogmoduletypes.StoreKey],
 		keys[blogmoduletypes.MemStoreKey],
 		app.GetSubspace(blogmoduletypes.ModuleName),
+
+		app.AccountKeeper,
+		app.NtnftKeeper,
 	)
 	blogModule := blogmodule.NewAppModule(appCodec, app.BlogKeeper, app.AccountKeeper, app.BankKeeper, app.NtnftKeeper)
 

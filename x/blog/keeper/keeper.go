@@ -11,6 +11,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	auth "github.com/cosmos/cosmos-sdk/x/auth/types"
+
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 )
 
@@ -20,7 +22,8 @@ type Keeper struct {
 	memKey     sdk.StoreKey
 	paramstore paramtypes.Subspace
 
-	ntnftKeeper types.NtnftKeeper
+	accountKeeper types.AccountKeeper
+	ntnftKeeper   types.NtnftKeeper
 }
 
 func NewKeeper(
@@ -29,6 +32,7 @@ func NewKeeper(
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
 
+	accountKeeper types.AccountKeeper,
 	ntnftKeeper types.NtnftKeeper,
 
 ) *Keeper {
@@ -44,7 +48,8 @@ func NewKeeper(
 		memKey:     memKey,
 		paramstore: ps,
 
-		ntnftKeeper: ntnftKeeper,
+		accountKeeper: accountKeeper,
+		ntnftKeeper:   ntnftKeeper,
 	}
 }
 
@@ -103,4 +108,14 @@ func (k Keeper) SetCount(ctx sdk.Context, count uint64) {
 	binary.BigEndian.PutUint64(newCount, count)
 
 	store.Set(byteKey, newCount)
+}
+
+// wrap so it can be accessed from InitGenesis
+func (k Keeper) GetModuleAccount(ctx sdk.Context) auth.ModuleAccountI {
+	return k.accountKeeper.GetModuleAccount(ctx, types.ModuleName)
+}
+
+// wrap so it can be accessed from InitGenesis
+func (k Keeper) SetModuleAccount(ctx sdk.Context, acc auth.ModuleAccountI) {
+	k.accountKeeper.SetModuleAccount(ctx, acc)
 }

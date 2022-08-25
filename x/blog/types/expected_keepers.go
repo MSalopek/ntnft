@@ -11,6 +11,7 @@ import (
 type AccountKeeper interface {
 	GetAccount(ctx sdk.Context, addr sdk.AccAddress) types.AccountI
 	GetModuleAccount(ctx sdk.Context, moduleName string) types.ModuleAccountI
+	SetModuleAccount(sdk.Context, types.ModuleAccountI)
 	// Methods imported from account should be defined here
 }
 

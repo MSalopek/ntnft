@@ -5,10 +5,11 @@ import (
 
 	"github.com/tendermint/tendermint/libs/log"
 
+	"nt-nft/x/ntnft/types"
+
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
-	"nt-nft/x/ntnft/types"
 )
 
 type (
@@ -18,7 +19,8 @@ type (
 		memKey     sdk.StoreKey
 		paramstore paramtypes.Subspace
 
-		bankKeeper types.BankKeeper
+		accountKeeper types.AccountKeeper
+		bankKeeper    types.BankKeeper
 	}
 )
 
@@ -28,6 +30,7 @@ func NewKeeper(
 	memKey sdk.StoreKey,
 	ps paramtypes.Subspace,
 
+	accountKeeper types.AccountKeeper,
 	bankKeeper types.BankKeeper,
 ) *Keeper {
 	// set KeyTable if it has not already been set
@@ -41,7 +44,9 @@ func NewKeeper(
 		storeKey:   storeKey,
 		memKey:     memKey,
 		paramstore: ps,
-		bankKeeper: bankKeeper,
+
+		accountKeeper: accountKeeper,
+		bankKeeper:    bankKeeper,
 	}
 }
 

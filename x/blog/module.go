@@ -120,7 +120,7 @@ func NewAppModule(
 		keeper:         keeper,
 		accountKeeper:  accountKeeper,
 		bankKeeper:     bankKeeper,
-		ntnftKeeper:    types.NtnftKeeper,
+		ntnftKeeper:    ntnftKeeper,
 	}
 }
 
