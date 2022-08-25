@@ -35,7 +35,10 @@ export interface MsgCreateModuleAccountClass {
   moduleName: string;
 }
 
-export interface MsgCreateModuleAccountClassResponse {}
+export interface MsgCreateModuleAccountClassResponse {
+  class_id: string;
+  owner: string;
+}
 
 const baseMsgMint: object = { creator: "", class_id: "" };
 
@@ -547,13 +550,22 @@ export const MsgCreateModuleAccountClass = {
   },
 };
 
-const baseMsgCreateModuleAccountClassResponse: object = {};
+const baseMsgCreateModuleAccountClassResponse: object = {
+  class_id: "",
+  owner: "",
+};
 
 export const MsgCreateModuleAccountClassResponse = {
   encode(
-    _: MsgCreateModuleAccountClassResponse,
+    message: MsgCreateModuleAccountClassResponse,
     writer: Writer = Writer.create()
   ): Writer {
+    if (message.class_id !== "") {
+      writer.uint32(10).string(message.class_id);
+    }
+    if (message.owner !== "") {
+      writer.uint32(18).string(message.owner);
+    }
     return writer;
   },
 
@@ -569,6 +581,12 @@ export const MsgCreateModuleAccountClassResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.class_id = reader.string();
+          break;
+        case 2:
+          message.owner = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -577,24 +595,46 @@ export const MsgCreateModuleAccountClassResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgCreateModuleAccountClassResponse {
+  fromJSON(object: any): MsgCreateModuleAccountClassResponse {
     const message = {
       ...baseMsgCreateModuleAccountClassResponse,
     } as MsgCreateModuleAccountClassResponse;
+    if (object.class_id !== undefined && object.class_id !== null) {
+      message.class_id = String(object.class_id);
+    } else {
+      message.class_id = "";
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = String(object.owner);
+    } else {
+      message.owner = "";
+    }
     return message;
   },
 
-  toJSON(_: MsgCreateModuleAccountClassResponse): unknown {
+  toJSON(message: MsgCreateModuleAccountClassResponse): unknown {
     const obj: any = {};
+    message.class_id !== undefined && (obj.class_id = message.class_id);
+    message.owner !== undefined && (obj.owner = message.owner);
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<MsgCreateModuleAccountClassResponse>
+    object: DeepPartial<MsgCreateModuleAccountClassResponse>
   ): MsgCreateModuleAccountClassResponse {
     const message = {
       ...baseMsgCreateModuleAccountClassResponse,
     } as MsgCreateModuleAccountClassResponse;
+    if (object.class_id !== undefined && object.class_id !== null) {
+      message.class_id = object.class_id;
+    } else {
+      message.class_id = "";
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    } else {
+      message.owner = "";
+    }
     return message;
   },
 };

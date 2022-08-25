@@ -25,7 +25,10 @@ export interface NtnftMsgCreateClassResponse {
   class_id?: string;
 }
 
-export type NtnftMsgCreateModuleAccountClassResponse = object;
+export interface NtnftMsgCreateModuleAccountClassResponse {
+  class_id?: string;
+  owner?: string;
+}
 
 export interface NtnftMsgMintResponse {
   class_id?: string;

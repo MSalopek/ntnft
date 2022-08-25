@@ -4,15 +4,15 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgCreateModuleAccountClass } from "./types/ntnft/tx";
 import { MsgCreateClass } from "./types/ntnft/tx";
 import { MsgMint } from "./types/ntnft/tx";
+import { MsgCreateModuleAccountClass } from "./types/ntnft/tx";
 
 
 const types = [
-  ["/ntnft.ntnft.MsgCreateModuleAccountClass", MsgCreateModuleAccountClass],
   ["/ntnft.ntnft.MsgCreateClass", MsgCreateClass],
   ["/ntnft.ntnft.MsgMint", MsgMint],
+  ["/ntnft.ntnft.MsgCreateModuleAccountClass", MsgCreateModuleAccountClass],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -45,9 +45,9 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgCreateModuleAccountClass: (data: MsgCreateModuleAccountClass): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgCreateModuleAccountClass", value: MsgCreateModuleAccountClass.fromPartial( data ) }),
     msgCreateClass: (data: MsgCreateClass): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgCreateClass", value: MsgCreateClass.fromPartial( data ) }),
     msgMint: (data: MsgMint): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgMint", value: MsgMint.fromPartial( data ) }),
+    msgCreateModuleAccountClass: (data: MsgCreateModuleAccountClass): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgCreateModuleAccountClass", value: MsgCreateModuleAccountClass.fromPartial( data ) }),
     
   };
 };
