@@ -43,7 +43,7 @@ func (k Keeper) MintToken(ctx sdk.Context, classId, createAddr string) (types.Nt
 
 	// send to class classOwner account
 	if err := k.bankKeeper.SendCoins(ctx, requester, classOwner, price); err != nil {
-		return types.NtNft{}, sdkerrors.Wrap(err, "error sending funds")
+		return types.NtNft{}, sdkerrors.Wrapf(err, "error sending coins from %s | to %s | amount %s | classPrice %s |", requester.String(), classOwner.String(), price, class.Price)
 	}
 
 	token := types.NtNft{
@@ -56,6 +56,8 @@ func (k Keeper) MintToken(ctx sdk.Context, classId, createAddr string) (types.Nt
 	}
 
 	owner, _ := k.GetOwner(ctx, requester.String())
+	owner.Index = createAddr
+	owner.Address = createAddr
 	ownerCollection := types.OwnerCollection{
 		ClassId: class.Index,
 		Token:   &token,

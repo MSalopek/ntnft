@@ -4,12 +4,13 @@ import (
 	"strconv"
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 	keepertest "nt-nft/testutil/keeper"
 	"nt-nft/testutil/nullify"
 	"nt-nft/x/ntnft/keeper"
 	"nt-nft/x/ntnft/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 // Prevent strconv unused error

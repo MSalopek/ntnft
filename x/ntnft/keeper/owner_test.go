@@ -59,6 +59,6 @@ func TestOwnerGetAll(t *testing.T) {
 	items := createNOwner(keeper, ctx, 10)
 	require.ElementsMatch(t,
 		nullify.Fill(items),
-		nullify.Fill(keeper.s(ctx)),
+		nullify.Fill(keeper.GetAllOwner(ctx)),
 	)
 }

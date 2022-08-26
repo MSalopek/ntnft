@@ -4,12 +4,13 @@ import (
 	"strconv"
 	"testing"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/stretchr/testify/require"
 	keepertest "nt-nft/testutil/keeper"
 	"nt-nft/testutil/nullify"
 	"nt-nft/x/ntnft/keeper"
 	"nt-nft/x/ntnft/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"github.com/stretchr/testify/require"
 )
 
 // Prevent strconv unused error
@@ -37,19 +38,6 @@ func TestClassGet(t *testing.T) {
 			nullify.Fill(&item),
 			nullify.Fill(&rst),
 		)
-	}
-}
-func TestClassRemove(t *testing.T) {
-	keeper, ctx := keepertest.NtnftKeeper(t)
-	items := createNClass(keeper, ctx, 10)
-	for _, item := range items {
-		keeper.RemoveClass(ctx,
-			item.Index,
-		)
-		_, found := keeper.GetClass(ctx,
-			item.Index,
-		)
-		require.False(t, found)
 	}
 }
 
