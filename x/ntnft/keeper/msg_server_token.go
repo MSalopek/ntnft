@@ -11,7 +11,7 @@ import (
 
 // MintToken will mint and issue a new non-transferrable token (NtNFT) with class msg.ClassId.
 // If the requester does not have sufficient funds or the class does not exist the request will fail.
-func (k msgServer) MintToken(goCtx context.Context, msg *types.MsgMint) (*types.MsgMintResponse, error) {
+func (k msgServer) MintToken(goCtx context.Context, msg *types.MsgMintToken) (*types.MsgMintTokenResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if msg == nil {
@@ -23,7 +23,7 @@ func (k msgServer) MintToken(goCtx context.Context, msg *types.MsgMint) (*types.
 		return nil, sdkerrors.Wrap(err, "could not mint token")
 	}
 
-	return &types.MsgMintResponse{
+	return &types.MsgMintTokenResponse{
 		ClassId: token.ClassId,
 		TokenId: token.Index,
 		Owner:   token.Owner,

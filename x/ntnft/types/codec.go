@@ -8,7 +8,7 @@ import (
 )
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
-	cdc.RegisterConcrete(&MsgMint{}, "ntnft/Mint", nil)
+	cdc.RegisterConcrete(&MsgMintToken{}, "ntnft/MintToken", nil)
 	cdc.RegisterConcrete(&MsgCreateClass{}, "ntnft/CreateClass", nil)
 	cdc.RegisterConcrete(&MsgCreateModuleAccountClass{}, "ntnft/CreateModuleAccountClass", nil)
 	cdc.RegisterConcrete(&MsgRemoveToken{}, "ntnft/RemoveToken", nil)
@@ -19,7 +19,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
-		&MsgMint{},
+		&MsgMintToken{},
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCreateClass{},

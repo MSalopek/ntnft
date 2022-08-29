@@ -3,13 +3,13 @@ package ntnft
 import (
 	"fmt"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"nt-nft/x/ntnft/keeper"
 	"nt-nft/x/ntnft/types"
+
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-// NewHandler ...
 func NewHandler(k keeper.Keeper) sdk.Handler {
 	msgServer := keeper.NewMsgServerImpl(k)
 
@@ -17,8 +17,8 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		ctx = ctx.WithEventManager(sdk.NewEventManager())
 
 		switch msg := msg.(type) {
-		case *types.MsgMint:
-			res, err := msgServer.Mint(sdk.WrapSDKContext(ctx), msg)
+		case *types.MsgMintToken:
+			res, err := msgServer.MintToken(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgCreateClass:
 			res, err := msgServer.CreateClass(sdk.WrapSDKContext(ctx), msg)

@@ -5,26 +5,26 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-const TypeMsgMint = "mint"
+const TypeMsgMintToken = "mint_token"
 
-var _ sdk.Msg = &MsgMint{}
+var _ sdk.Msg = &MsgMintToken{}
 
-func NewMsgMint(creator string, classId string) *MsgMint {
-	return &MsgMint{
+func NewMsgMintToken(creator string, classId string) *MsgMintToken {
+	return &MsgMintToken{
 		Creator: creator,
 		ClassId: classId,
 	}
 }
 
-func (msg *MsgMint) Route() string {
+func (msg *MsgMintToken) Route() string {
 	return RouterKey
 }
 
-func (msg *MsgMint) Type() string {
-	return TypeMsgMint
+func (msg *MsgMintToken) Type() string {
+	return TypeMsgMintToken
 }
 
-func (msg *MsgMint) GetSigners() []sdk.AccAddress {
+func (msg *MsgMintToken) GetSigners() []sdk.AccAddress {
 	creator, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		panic(err)
@@ -32,12 +32,12 @@ func (msg *MsgMint) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-func (msg *MsgMint) GetSignBytes() []byte {
+func (msg *MsgMintToken) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-func (msg *MsgMint) ValidateBasic() error {
+func (msg *MsgMintToken) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.Creator)
 	if err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidAddress, "invalid creator address (%s)", err)
