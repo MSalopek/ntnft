@@ -6,16 +6,20 @@ export const protobufPackage = "ntnft.blog";
 
 /** GenesisState defines the blog module's genesis state. */
 export interface GenesisState {
-  /** this line is used by starport scaffolding # genesis/proto/state */
   params: Params | undefined;
+  /** this line is used by starport scaffolding # genesis/proto/state */
+  classId: string;
 }
 
-const baseGenesisState: object = {};
+const baseGenesisState: object = { classId: "" };
 
 export const GenesisState = {
   encode(message: GenesisState, writer: Writer = Writer.create()): Writer {
     if (message.params !== undefined) {
       Params.encode(message.params, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.classId !== "") {
+      writer.uint32(18).string(message.classId);
     }
     return writer;
   },
@@ -29,6 +33,9 @@ export const GenesisState = {
       switch (tag >>> 3) {
         case 1:
           message.params = Params.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.classId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -45,6 +52,11 @@ export const GenesisState = {
     } else {
       message.params = undefined;
     }
+    if (object.classId !== undefined && object.classId !== null) {
+      message.classId = String(object.classId);
+    } else {
+      message.classId = "";
+    }
     return message;
   },
 
@@ -52,6 +64,7 @@ export const GenesisState = {
     const obj: any = {};
     message.params !== undefined &&
       (obj.params = message.params ? Params.toJSON(message.params) : undefined);
+    message.classId !== undefined && (obj.classId = message.classId);
     return obj;
   },
 
@@ -61,6 +74,11 @@ export const GenesisState = {
       message.params = Params.fromPartial(object.params);
     } else {
       message.params = undefined;
+    }
+    if (object.classId !== undefined && object.classId !== null) {
+      message.classId = object.classId;
+    } else {
+      message.classId = "";
     }
     return message;
   },

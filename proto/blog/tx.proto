@@ -7,8 +7,9 @@ option go_package = "nt-nft/x/blog/types";
 
 // Msg defines the Msg service.
 service Msg {
-      rpc CreatePost(MsgCreatePost) returns (MsgCreatePostResponse);
+  rpc CreatePost(MsgCreatePost) returns (MsgCreatePostResponse);
   rpc RequestAccess(MsgRequestAccess) returns (MsgRequestAccessResponse);
+  rpc Init(MsgInit) returns (MsgInitResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -34,6 +35,13 @@ message MsgRequestAccessResponse {
   string uri = 4; 
   string uriHash = 5; 
   string data = 6; 
+}
+
+message MsgInit {
+  string creator = 1;
+}
+
+message MsgInitResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

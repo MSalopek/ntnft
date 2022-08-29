@@ -4,13 +4,15 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
-import { MsgCreatePost } from "./types/blog/tx";
+import { MsgInit } from "./types/blog/tx";
 import { MsgRequestAccess } from "./types/blog/tx";
+import { MsgCreatePost } from "./types/blog/tx";
 
 
 const types = [
-  ["/ntnft.blog.MsgCreatePost", MsgCreatePost],
+  ["/ntnft.blog.MsgInit", MsgInit],
   ["/ntnft.blog.MsgRequestAccess", MsgRequestAccess],
+  ["/ntnft.blog.MsgCreatePost", MsgCreatePost],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -43,8 +45,9 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
-    msgCreatePost: (data: MsgCreatePost): EncodeObject => ({ typeUrl: "/ntnft.blog.MsgCreatePost", value: MsgCreatePost.fromPartial( data ) }),
+    msgInit: (data: MsgInit): EncodeObject => ({ typeUrl: "/ntnft.blog.MsgInit", value: MsgInit.fromPartial( data ) }),
     msgRequestAccess: (data: MsgRequestAccess): EncodeObject => ({ typeUrl: "/ntnft.blog.MsgRequestAccess", value: MsgRequestAccess.fromPartial( data ) }),
+    msgCreatePost: (data: MsgCreatePost): EncodeObject => ({ typeUrl: "/ntnft.blog.MsgCreatePost", value: MsgCreatePost.fromPartial( data ) }),
     
   };
 };

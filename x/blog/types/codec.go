@@ -10,6 +10,7 @@ import (
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreatePost{}, "blog/CreatePost", nil)
 	cdc.RegisterConcrete(&MsgRequestAccess{}, "blog/RequestAccess", nil)
+	cdc.RegisterConcrete(&MsgInit{}, "blog/Init", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -21,6 +22,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 		&MsgRequestAccess{},
 	)
 
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgInit{},
+	)
 	// this line is used by starport scaffolding # 3
 
 	msgservice.RegisterMsgServiceDesc(registry, &_Msg_serviceDesc)

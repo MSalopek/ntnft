@@ -27,6 +27,12 @@ export interface MsgRequestAccessResponse {
   data: string;
 }
 
+export interface MsgInit {
+  creator: string;
+}
+
+export interface MsgInitResponse {}
+
 const baseMsgCreatePost: object = { creator: "", title: "", body: "" };
 
 export const MsgCreatePost = {
@@ -392,11 +398,105 @@ export const MsgRequestAccessResponse = {
   },
 };
 
+const baseMsgInit: object = { creator: "" };
+
+export const MsgInit = {
+  encode(message: MsgInit, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgInit {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgInit } as MsgInit;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgInit {
+    const message = { ...baseMsgInit } as MsgInit;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgInit): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgInit>): MsgInit {
+    const message = { ...baseMsgInit } as MsgInit;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgInitResponse: object = {};
+
+export const MsgInitResponse = {
+  encode(_: MsgInitResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgInitResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgInitResponse } as MsgInitResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgInitResponse {
+    const message = { ...baseMsgInitResponse } as MsgInitResponse;
+    return message;
+  },
+
+  toJSON(_: MsgInitResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgInitResponse>): MsgInitResponse {
+    const message = { ...baseMsgInitResponse } as MsgInitResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   CreatePost(request: MsgCreatePost): Promise<MsgCreatePostResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   RequestAccess(request: MsgRequestAccess): Promise<MsgRequestAccessResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  Init(request: MsgInit): Promise<MsgInitResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -418,6 +518,12 @@ export class MsgClientImpl implements Msg {
     return promise.then((data) =>
       MsgRequestAccessResponse.decode(new Reader(data))
     );
+  }
+
+  Init(request: MsgInit): Promise<MsgInitResponse> {
+    const data = MsgInit.encode(request).finish();
+    const promise = this.rpc.request("ntnft.blog.Msg", "Init", data);
+    return promise.then((data) => MsgInitResponse.decode(new Reader(data)));
   }
 }
 

@@ -18,7 +18,7 @@ func (k msgServer) RequestAccess(goCtx context.Context, msg *types.MsgRequestAcc
 	}
 
 	authClass := k.GetAuthTokenClass(ctx)
-	if authClass == nil {
+	if authClass == nil || len(authClass) == 0 {
 		panic("auth token class not set on blog module")
 	}
 
@@ -28,7 +28,7 @@ func (k msgServer) RequestAccess(goCtx context.Context, msg *types.MsgRequestAcc
 
 	tk, err := k.ntnftKeeper.MintToken(ctx, string(authClass), msg.Creator)
 	if err != nil {
-		return nil, sdkerrors.Wrap(err, "error granting access")
+		return nil, sdkerrors.Wrapf(err, "error granting access - classId: %s", authClass)
 	}
 
 	return &types.MsgRequestAccessResponse{
