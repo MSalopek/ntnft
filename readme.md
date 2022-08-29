@@ -40,4 +40,12 @@ $ ntnftd q ntnft list-owner
 ```
 
 ## x/blog module
-ntnftd tx blog request-access --from bob --chain-id=ntnft
+### Init
+* ntnft git:(main) ✗ ntnftd tx blog init --from bob --chain-id=ntnft --yes
+
+### Request access
+* ntnftd tx blog request-access --from bob --chain-id=ntnft --yes
+* confirm: ntnftd q ntnft list-nt-nft
+
+### Post as registered
+* 

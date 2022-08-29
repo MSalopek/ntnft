@@ -29,9 +29,12 @@ export interface MsgRequestAccessResponse {
 
 export interface MsgInit {
   creator: string;
+  price: string;
 }
 
-export interface MsgInitResponse {}
+export interface MsgInitResponse {
+  classId: string;
+}
 
 const baseMsgCreatePost: object = { creator: "", title: "", body: "" };
 
@@ -398,12 +401,15 @@ export const MsgRequestAccessResponse = {
   },
 };
 
-const baseMsgInit: object = { creator: "" };
+const baseMsgInit: object = { creator: "", price: "" };
 
 export const MsgInit = {
   encode(message: MsgInit, writer: Writer = Writer.create()): Writer {
     if (message.creator !== "") {
       writer.uint32(10).string(message.creator);
+    }
+    if (message.price !== "") {
+      writer.uint32(18).string(message.price);
     }
     return writer;
   },
@@ -417,6 +423,9 @@ export const MsgInit = {
       switch (tag >>> 3) {
         case 1:
           message.creator = reader.string();
+          break;
+        case 2:
+          message.price = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -433,12 +442,18 @@ export const MsgInit = {
     } else {
       message.creator = "";
     }
+    if (object.price !== undefined && object.price !== null) {
+      message.price = String(object.price);
+    } else {
+      message.price = "";
+    }
     return message;
   },
 
   toJSON(message: MsgInit): unknown {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
+    message.price !== undefined && (obj.price = message.price);
     return obj;
   },
 
@@ -449,14 +464,22 @@ export const MsgInit = {
     } else {
       message.creator = "";
     }
+    if (object.price !== undefined && object.price !== null) {
+      message.price = object.price;
+    } else {
+      message.price = "";
+    }
     return message;
   },
 };
 
-const baseMsgInitResponse: object = {};
+const baseMsgInitResponse: object = { classId: "" };
 
 export const MsgInitResponse = {
-  encode(_: MsgInitResponse, writer: Writer = Writer.create()): Writer {
+  encode(message: MsgInitResponse, writer: Writer = Writer.create()): Writer {
+    if (message.classId !== "") {
+      writer.uint32(10).string(message.classId);
+    }
     return writer;
   },
 
@@ -467,6 +490,9 @@ export const MsgInitResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.classId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -475,18 +501,29 @@ export const MsgInitResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgInitResponse {
+  fromJSON(object: any): MsgInitResponse {
     const message = { ...baseMsgInitResponse } as MsgInitResponse;
+    if (object.classId !== undefined && object.classId !== null) {
+      message.classId = String(object.classId);
+    } else {
+      message.classId = "";
+    }
     return message;
   },
 
-  toJSON(_: MsgInitResponse): unknown {
+  toJSON(message: MsgInitResponse): unknown {
     const obj: any = {};
+    message.classId !== undefined && (obj.classId = message.classId);
     return obj;
   },
 
-  fromPartial(_: DeepPartial<MsgInitResponse>): MsgInitResponse {
+  fromPartial(object: DeepPartial<MsgInitResponse>): MsgInitResponse {
     const message = { ...baseMsgInitResponse } as MsgInitResponse;
+    if (object.classId !== undefined && object.classId !== null) {
+      message.classId = object.classId;
+    } else {
+      message.classId = "";
+    }
     return message;
   },
 };
