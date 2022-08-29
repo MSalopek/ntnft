@@ -36,6 +36,8 @@ export interface NtnftMsgMintResponse {
   owner?: string;
 }
 
+export type NtnftMsgRemoveTokenResponse = object;
+
 export interface NtnftNtNft {
   index?: string;
   classId?: string;

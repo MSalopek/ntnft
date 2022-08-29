@@ -52281,6 +52281,8 @@ definitions:
         type: string
       owner:
         type: string
+  ntnft.ntnft.MsgRemoveTokenResponse:
+    type: object
   ntnft.ntnft.NtNft:
     type: object
     properties:

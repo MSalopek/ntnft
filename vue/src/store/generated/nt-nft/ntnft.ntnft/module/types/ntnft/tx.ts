@@ -40,6 +40,13 @@ export interface MsgCreateModuleAccountClassResponse {
   owner: string;
 }
 
+export interface MsgRemoveToken {
+  creator: string;
+  tokenId: string;
+}
+
+export interface MsgRemoveTokenResponse {}
+
 const baseMsgMint: object = { creator: "", class_id: "" };
 
 export const MsgMint = {
@@ -639,14 +646,125 @@ export const MsgCreateModuleAccountClassResponse = {
   },
 };
 
+const baseMsgRemoveToken: object = { creator: "", tokenId: "" };
+
+export const MsgRemoveToken = {
+  encode(message: MsgRemoveToken, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.tokenId !== "") {
+      writer.uint32(18).string(message.tokenId);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgRemoveToken {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgRemoveToken } as MsgRemoveToken;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.tokenId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgRemoveToken {
+    const message = { ...baseMsgRemoveToken } as MsgRemoveToken;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.tokenId !== undefined && object.tokenId !== null) {
+      message.tokenId = String(object.tokenId);
+    } else {
+      message.tokenId = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgRemoveToken): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgRemoveToken>): MsgRemoveToken {
+    const message = { ...baseMsgRemoveToken } as MsgRemoveToken;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.tokenId !== undefined && object.tokenId !== null) {
+      message.tokenId = object.tokenId;
+    } else {
+      message.tokenId = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgRemoveTokenResponse: object = {};
+
+export const MsgRemoveTokenResponse = {
+  encode(_: MsgRemoveTokenResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgRemoveTokenResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgRemoveTokenResponse } as MsgRemoveTokenResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgRemoveTokenResponse {
+    const message = { ...baseMsgRemoveTokenResponse } as MsgRemoveTokenResponse;
+    return message;
+  },
+
+  toJSON(_: MsgRemoveTokenResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgRemoveTokenResponse>): MsgRemoveTokenResponse {
+    const message = { ...baseMsgRemoveTokenResponse } as MsgRemoveTokenResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   Mint(request: MsgMint): Promise<MsgMintResponse>;
   CreateClass(request: MsgCreateClass): Promise<MsgCreateClassResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateModuleAccountClass(
     request: MsgCreateModuleAccountClass
   ): Promise<MsgCreateModuleAccountClassResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  RemoveToken(request: MsgRemoveToken): Promise<MsgRemoveTokenResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -679,6 +797,14 @@ export class MsgClientImpl implements Msg {
     );
     return promise.then((data) =>
       MsgCreateModuleAccountClassResponse.decode(new Reader(data))
+    );
+  }
+
+  RemoveToken(request: MsgRemoveToken): Promise<MsgRemoveTokenResponse> {
+    const data = MsgRemoveToken.encode(request).finish();
+    const promise = this.rpc.request("ntnft.ntnft.Msg", "RemoveToken", data);
+    return promise.then((data) =>
+      MsgRemoveTokenResponse.decode(new Reader(data))
     );
   }
 }

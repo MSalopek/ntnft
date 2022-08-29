@@ -36,6 +36,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreateModuleAccountClass int = 100
 
+	opWeightMsgRemoveToken = "op_weight_msg_remove_token"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRemoveToken int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -101,6 +105,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreateModuleAccountClass,
 		ntnftsimulation.SimulateMsgCreateModuleAccountClass(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRemoveToken int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRemoveToken, &weightMsgRemoveToken, nil,
+		func(_ *rand.Rand) {
+			weightMsgRemoveToken = defaultWeightMsgRemoveToken
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRemoveToken,
+		ntnftsimulation.SimulateMsgRemoveToken(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

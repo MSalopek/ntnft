@@ -10,6 +10,7 @@ service Msg {
   rpc Mint(MsgMint) returns (MsgMintResponse);
   rpc CreateClass(MsgCreateClass) returns (MsgCreateClassResponse);
   rpc CreateModuleAccountClass(MsgCreateModuleAccountClass) returns (MsgCreateModuleAccountClassResponse);
+  rpc RemoveToken(MsgRemoveToken) returns (MsgRemoveTokenResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -48,6 +49,14 @@ message MsgCreateModuleAccountClass {
 message MsgCreateModuleAccountClassResponse {
   string class_id = 1;
   string owner = 2;
+}
+
+message MsgRemoveToken {
+  string creator = 1;
+  string tokenId = 2;
+}
+
+message MsgRemoveTokenResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message
