@@ -19,6 +19,7 @@ func (k msgServer) EditToken(goCtx context.Context, msg *types.MsgEditToken) (*t
 	}
 
 	editToken := types.NtNft{
+		Index:   msg.TokenId,
 		Uri:     msg.Uri,
 		UriHash: msg.UriHash,
 		Data:    msg.Data,
