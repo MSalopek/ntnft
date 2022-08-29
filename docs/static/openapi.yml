@@ -52272,6 +52272,8 @@ definitions:
         type: string
       owner:
         type: string
+  ntnft.ntnft.MsgEditTokenResponse:
+    type: object
   ntnft.ntnft.MsgMintResponse:
     type: object
     properties:

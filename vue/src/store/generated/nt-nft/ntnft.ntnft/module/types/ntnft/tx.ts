@@ -47,6 +47,16 @@ export interface MsgRemoveToken {
 
 export interface MsgRemoveTokenResponse {}
 
+export interface MsgEditToken {
+  creator: string;
+  tokenId: string;
+  uri: string;
+  uriHash: string;
+  data: string;
+}
+
+export interface MsgEditTokenResponse {}
+
 const baseMsgMint: object = { creator: "", class_id: "" };
 
 export const MsgMint = {
@@ -756,6 +766,173 @@ export const MsgRemoveTokenResponse = {
   },
 };
 
+const baseMsgEditToken: object = {
+  creator: "",
+  tokenId: "",
+  uri: "",
+  uriHash: "",
+  data: "",
+};
+
+export const MsgEditToken = {
+  encode(message: MsgEditToken, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.tokenId !== "") {
+      writer.uint32(18).string(message.tokenId);
+    }
+    if (message.uri !== "") {
+      writer.uint32(26).string(message.uri);
+    }
+    if (message.uriHash !== "") {
+      writer.uint32(34).string(message.uriHash);
+    }
+    if (message.data !== "") {
+      writer.uint32(42).string(message.data);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgEditToken {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgEditToken } as MsgEditToken;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.tokenId = reader.string();
+          break;
+        case 3:
+          message.uri = reader.string();
+          break;
+        case 4:
+          message.uriHash = reader.string();
+          break;
+        case 5:
+          message.data = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgEditToken {
+    const message = { ...baseMsgEditToken } as MsgEditToken;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.tokenId !== undefined && object.tokenId !== null) {
+      message.tokenId = String(object.tokenId);
+    } else {
+      message.tokenId = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = String(object.uri);
+    } else {
+      message.uri = "";
+    }
+    if (object.uriHash !== undefined && object.uriHash !== null) {
+      message.uriHash = String(object.uriHash);
+    } else {
+      message.uriHash = "";
+    }
+    if (object.data !== undefined && object.data !== null) {
+      message.data = String(object.data);
+    } else {
+      message.data = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgEditToken): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
+    message.uri !== undefined && (obj.uri = message.uri);
+    message.uriHash !== undefined && (obj.uriHash = message.uriHash);
+    message.data !== undefined && (obj.data = message.data);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgEditToken>): MsgEditToken {
+    const message = { ...baseMsgEditToken } as MsgEditToken;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.tokenId !== undefined && object.tokenId !== null) {
+      message.tokenId = object.tokenId;
+    } else {
+      message.tokenId = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = object.uri;
+    } else {
+      message.uri = "";
+    }
+    if (object.uriHash !== undefined && object.uriHash !== null) {
+      message.uriHash = object.uriHash;
+    } else {
+      message.uriHash = "";
+    }
+    if (object.data !== undefined && object.data !== null) {
+      message.data = object.data;
+    } else {
+      message.data = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgEditTokenResponse: object = {};
+
+export const MsgEditTokenResponse = {
+  encode(_: MsgEditTokenResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgEditTokenResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgEditTokenResponse } as MsgEditTokenResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgEditTokenResponse {
+    const message = { ...baseMsgEditTokenResponse } as MsgEditTokenResponse;
+    return message;
+  },
+
+  toJSON(_: MsgEditTokenResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgEditTokenResponse>): MsgEditTokenResponse {
+    const message = { ...baseMsgEditTokenResponse } as MsgEditTokenResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   Mint(request: MsgMint): Promise<MsgMintResponse>;
@@ -763,8 +940,9 @@ export interface Msg {
   CreateModuleAccountClass(
     request: MsgCreateModuleAccountClass
   ): Promise<MsgCreateModuleAccountClassResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   RemoveToken(request: MsgRemoveToken): Promise<MsgRemoveTokenResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  EditToken(request: MsgEditToken): Promise<MsgEditTokenResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -805,6 +983,14 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("ntnft.ntnft.Msg", "RemoveToken", data);
     return promise.then((data) =>
       MsgRemoveTokenResponse.decode(new Reader(data))
+    );
+  }
+
+  EditToken(request: MsgEditToken): Promise<MsgEditTokenResponse> {
+    const data = MsgEditToken.encode(request).finish();
+    const promise = this.rpc.request("ntnft.ntnft.Msg", "EditToken", data);
+    return promise.then((data) =>
+      MsgEditTokenResponse.decode(new Reader(data))
     );
   }
 }

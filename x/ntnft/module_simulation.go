@@ -40,6 +40,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgRemoveToken int = 100
 
+	opWeightMsgEditToken = "op_weight_msg_edit_token"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgEditToken int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -116,6 +120,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgRemoveToken,
 		ntnftsimulation.SimulateMsgRemoveToken(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgEditToken int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgEditToken, &weightMsgEditToken, nil,
+		func(_ *rand.Rand) {
+			weightMsgEditToken = defaultWeightMsgEditToken
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgEditToken,
+		ntnftsimulation.SimulateMsgEditToken(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

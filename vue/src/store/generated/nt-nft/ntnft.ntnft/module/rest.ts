@@ -30,6 +30,8 @@ export interface NtnftMsgCreateModuleAccountClassResponse {
   owner?: string;
 }
 
+export type NtnftMsgEditTokenResponse = object;
+
 export interface NtnftMsgMintResponse {
   class_id?: string;
   token_id?: string;
