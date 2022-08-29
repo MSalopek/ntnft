@@ -55,7 +55,24 @@ export interface MsgEditToken {
   data: string;
 }
 
-export interface MsgEditTokenResponse {}
+export interface MsgEditTokenResponse {
+  class_id: string;
+  token_id: string;
+  owner: string;
+  uri: string;
+  uriHash: string;
+  data: string;
+}
+
+export interface MsgEditClass {
+  creator: string;
+  classId: string;
+  uri: string;
+  uriHash: string;
+  data: string;
+}
+
+export interface MsgEditClassResponse {}
 
 const baseMsgMint: object = { creator: "", class_id: "" };
 
@@ -895,10 +912,38 @@ export const MsgEditToken = {
   },
 };
 
-const baseMsgEditTokenResponse: object = {};
+const baseMsgEditTokenResponse: object = {
+  class_id: "",
+  token_id: "",
+  owner: "",
+  uri: "",
+  uriHash: "",
+  data: "",
+};
 
 export const MsgEditTokenResponse = {
-  encode(_: MsgEditTokenResponse, writer: Writer = Writer.create()): Writer {
+  encode(
+    message: MsgEditTokenResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.class_id !== "") {
+      writer.uint32(10).string(message.class_id);
+    }
+    if (message.token_id !== "") {
+      writer.uint32(18).string(message.token_id);
+    }
+    if (message.owner !== "") {
+      writer.uint32(26).string(message.owner);
+    }
+    if (message.uri !== "") {
+      writer.uint32(34).string(message.uri);
+    }
+    if (message.uriHash !== "") {
+      writer.uint32(42).string(message.uriHash);
+    }
+    if (message.data !== "") {
+      writer.uint32(50).string(message.data);
+    }
     return writer;
   },
 
@@ -906,6 +951,257 @@ export const MsgEditTokenResponse = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseMsgEditTokenResponse } as MsgEditTokenResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.class_id = reader.string();
+          break;
+        case 2:
+          message.token_id = reader.string();
+          break;
+        case 3:
+          message.owner = reader.string();
+          break;
+        case 4:
+          message.uri = reader.string();
+          break;
+        case 5:
+          message.uriHash = reader.string();
+          break;
+        case 6:
+          message.data = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgEditTokenResponse {
+    const message = { ...baseMsgEditTokenResponse } as MsgEditTokenResponse;
+    if (object.class_id !== undefined && object.class_id !== null) {
+      message.class_id = String(object.class_id);
+    } else {
+      message.class_id = "";
+    }
+    if (object.token_id !== undefined && object.token_id !== null) {
+      message.token_id = String(object.token_id);
+    } else {
+      message.token_id = "";
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = String(object.owner);
+    } else {
+      message.owner = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = String(object.uri);
+    } else {
+      message.uri = "";
+    }
+    if (object.uriHash !== undefined && object.uriHash !== null) {
+      message.uriHash = String(object.uriHash);
+    } else {
+      message.uriHash = "";
+    }
+    if (object.data !== undefined && object.data !== null) {
+      message.data = String(object.data);
+    } else {
+      message.data = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgEditTokenResponse): unknown {
+    const obj: any = {};
+    message.class_id !== undefined && (obj.class_id = message.class_id);
+    message.token_id !== undefined && (obj.token_id = message.token_id);
+    message.owner !== undefined && (obj.owner = message.owner);
+    message.uri !== undefined && (obj.uri = message.uri);
+    message.uriHash !== undefined && (obj.uriHash = message.uriHash);
+    message.data !== undefined && (obj.data = message.data);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgEditTokenResponse>): MsgEditTokenResponse {
+    const message = { ...baseMsgEditTokenResponse } as MsgEditTokenResponse;
+    if (object.class_id !== undefined && object.class_id !== null) {
+      message.class_id = object.class_id;
+    } else {
+      message.class_id = "";
+    }
+    if (object.token_id !== undefined && object.token_id !== null) {
+      message.token_id = object.token_id;
+    } else {
+      message.token_id = "";
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    } else {
+      message.owner = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = object.uri;
+    } else {
+      message.uri = "";
+    }
+    if (object.uriHash !== undefined && object.uriHash !== null) {
+      message.uriHash = object.uriHash;
+    } else {
+      message.uriHash = "";
+    }
+    if (object.data !== undefined && object.data !== null) {
+      message.data = object.data;
+    } else {
+      message.data = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgEditClass: object = {
+  creator: "",
+  classId: "",
+  uri: "",
+  uriHash: "",
+  data: "",
+};
+
+export const MsgEditClass = {
+  encode(message: MsgEditClass, writer: Writer = Writer.create()): Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.classId !== "") {
+      writer.uint32(18).string(message.classId);
+    }
+    if (message.uri !== "") {
+      writer.uint32(26).string(message.uri);
+    }
+    if (message.uriHash !== "") {
+      writer.uint32(34).string(message.uriHash);
+    }
+    if (message.data !== "") {
+      writer.uint32(42).string(message.data);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgEditClass {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgEditClass } as MsgEditClass;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.classId = reader.string();
+          break;
+        case 3:
+          message.uri = reader.string();
+          break;
+        case 4:
+          message.uriHash = reader.string();
+          break;
+        case 5:
+          message.data = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgEditClass {
+    const message = { ...baseMsgEditClass } as MsgEditClass;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = String(object.creator);
+    } else {
+      message.creator = "";
+    }
+    if (object.classId !== undefined && object.classId !== null) {
+      message.classId = String(object.classId);
+    } else {
+      message.classId = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = String(object.uri);
+    } else {
+      message.uri = "";
+    }
+    if (object.uriHash !== undefined && object.uriHash !== null) {
+      message.uriHash = String(object.uriHash);
+    } else {
+      message.uriHash = "";
+    }
+    if (object.data !== undefined && object.data !== null) {
+      message.data = String(object.data);
+    } else {
+      message.data = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgEditClass): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.classId !== undefined && (obj.classId = message.classId);
+    message.uri !== undefined && (obj.uri = message.uri);
+    message.uriHash !== undefined && (obj.uriHash = message.uriHash);
+    message.data !== undefined && (obj.data = message.data);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgEditClass>): MsgEditClass {
+    const message = { ...baseMsgEditClass } as MsgEditClass;
+    if (object.creator !== undefined && object.creator !== null) {
+      message.creator = object.creator;
+    } else {
+      message.creator = "";
+    }
+    if (object.classId !== undefined && object.classId !== null) {
+      message.classId = object.classId;
+    } else {
+      message.classId = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = object.uri;
+    } else {
+      message.uri = "";
+    }
+    if (object.uriHash !== undefined && object.uriHash !== null) {
+      message.uriHash = object.uriHash;
+    } else {
+      message.uriHash = "";
+    }
+    if (object.data !== undefined && object.data !== null) {
+      message.data = object.data;
+    } else {
+      message.data = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgEditClassResponse: object = {};
+
+export const MsgEditClassResponse = {
+  encode(_: MsgEditClassResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgEditClassResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgEditClassResponse } as MsgEditClassResponse;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -917,18 +1213,18 @@ export const MsgEditTokenResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgEditTokenResponse {
-    const message = { ...baseMsgEditTokenResponse } as MsgEditTokenResponse;
+  fromJSON(_: any): MsgEditClassResponse {
+    const message = { ...baseMsgEditClassResponse } as MsgEditClassResponse;
     return message;
   },
 
-  toJSON(_: MsgEditTokenResponse): unknown {
+  toJSON(_: MsgEditClassResponse): unknown {
     const obj: any = {};
     return obj;
   },
 
-  fromPartial(_: DeepPartial<MsgEditTokenResponse>): MsgEditTokenResponse {
-    const message = { ...baseMsgEditTokenResponse } as MsgEditTokenResponse;
+  fromPartial(_: DeepPartial<MsgEditClassResponse>): MsgEditClassResponse {
+    const message = { ...baseMsgEditClassResponse } as MsgEditClassResponse;
     return message;
   },
 };
@@ -941,8 +1237,9 @@ export interface Msg {
     request: MsgCreateModuleAccountClass
   ): Promise<MsgCreateModuleAccountClassResponse>;
   RemoveToken(request: MsgRemoveToken): Promise<MsgRemoveTokenResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   EditToken(request: MsgEditToken): Promise<MsgEditTokenResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  EditClass(request: MsgEditClass): Promise<MsgEditClassResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -991,6 +1288,14 @@ export class MsgClientImpl implements Msg {
     const promise = this.rpc.request("ntnft.ntnft.Msg", "EditToken", data);
     return promise.then((data) =>
       MsgEditTokenResponse.decode(new Reader(data))
+    );
+  }
+
+  EditClass(request: MsgEditClass): Promise<MsgEditClassResponse> {
+    const data = MsgEditClass.encode(request).finish();
+    const promise = this.rpc.request("ntnft.ntnft.Msg", "EditClass", data);
+    return promise.then((data) =>
+      MsgEditClassResponse.decode(new Reader(data))
     );
   }
 }

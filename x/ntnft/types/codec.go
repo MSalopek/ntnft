@@ -13,6 +13,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgCreateModuleAccountClass{}, "ntnft/CreateModuleAccountClass", nil)
 	cdc.RegisterConcrete(&MsgRemoveToken{}, "ntnft/RemoveToken", nil)
 	cdc.RegisterConcrete(&MsgEditToken{}, "ntnft/EditToken", nil)
+	cdc.RegisterConcrete(&MsgEditClass{}, "ntnft/EditClass", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -31,6 +32,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgEditToken{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgEditClass{},
 	)
 	// this line is used by starport scaffolding # 3
 

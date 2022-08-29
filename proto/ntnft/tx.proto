@@ -12,6 +12,7 @@ service Msg {
   rpc CreateModuleAccountClass(MsgCreateModuleAccountClass) returns (MsgCreateModuleAccountClassResponse);
   rpc RemoveToken(MsgRemoveToken) returns (MsgRemoveTokenResponse);
   rpc EditToken(MsgEditToken) returns (MsgEditTokenResponse);
+  rpc EditClass(MsgEditClass) returns (MsgEditClassResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -72,6 +73,23 @@ message MsgEditTokenResponse {
   string class_id = 1;
   string token_id = 2;
   string owner = 3;
+  string uri = 4;
+  string uriHash = 5;
+  string data = 6;
+}
+
+message MsgEditClass {
+  string creator = 1;
+  string classId = 2;
+  string uri = 3;
+  string uriHash = 4;
+  string data = 5;
+}
+
+message MsgEditClassResponse {
+  string class_id = 1;
+  string creator = 2;
+  string name = 3;
   string uri = 4;
   string uriHash = 5;
   string data = 6;
