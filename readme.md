@@ -16,7 +16,7 @@ NOTE: open another terminal to use the `ntnftd`.
 
 This command will create a class named "first-class".
 
-`$ ntnftd tx ntnft create-class name=first-class uri="" uri-hash="" data="" price=1 --from bob --chain-id=ntnft`
+`$ ntnftd tx ntnft create-class first-class "" "" "" 10token --from bob --chain-id=ntnft`
 
 Check that class exists:
 
@@ -26,7 +26,7 @@ Check that class exists:
 ### Mint an NT-NFT for Bob
 Create a token from class for Bob
 ```
-$ ntnftd tx ntnft mint "0" --from bob --chain-id=ntnft
+$ ntnftd tx ntnft mint "1" --from bob --chain-id=ntnft
 
 {
 	"body": {
@@ -55,11 +55,8 @@ $ ntnftd tx ntnft mint "0" --from bob --chain-id=ntnft
 }
 ```
 
-Now poor Bob cannot get rid of the NT-NFT :(.
-
-
-### Check query cmds
-Check that the NT-NFT exists and is properly handled (assigned to bob)
+### Query cmds
+Available query commands are listef below.
 
 ```
 $ ntnftd q ntnft list-class
