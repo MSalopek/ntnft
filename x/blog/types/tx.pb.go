@@ -131,28 +131,114 @@ func (m *MsgCreatePostResponse) GetId() uint64 {
 	return 0
 }
 
+type MsgRequestAccess struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+}
+
+func (m *MsgRequestAccess) Reset()         { *m = MsgRequestAccess{} }
+func (m *MsgRequestAccess) String() string { return proto.CompactTextString(m) }
+func (*MsgRequestAccess) ProtoMessage()    {}
+func (*MsgRequestAccess) Descriptor() ([]byte, []int) {
+	return fileDescriptor_90382f40c04acbba, []int{2}
+}
+func (m *MsgRequestAccess) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRequestAccess) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRequestAccess.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRequestAccess) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRequestAccess.Merge(m, src)
+}
+func (m *MsgRequestAccess) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRequestAccess) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRequestAccess.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRequestAccess proto.InternalMessageInfo
+
+func (m *MsgRequestAccess) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+type MsgRequestAccessResponse struct {
+}
+
+func (m *MsgRequestAccessResponse) Reset()         { *m = MsgRequestAccessResponse{} }
+func (m *MsgRequestAccessResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgRequestAccessResponse) ProtoMessage()    {}
+func (*MsgRequestAccessResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_90382f40c04acbba, []int{3}
+}
+func (m *MsgRequestAccessResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgRequestAccessResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgRequestAccessResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgRequestAccessResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgRequestAccessResponse.Merge(m, src)
+}
+func (m *MsgRequestAccessResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgRequestAccessResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgRequestAccessResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgRequestAccessResponse proto.InternalMessageInfo
+
 func init() {
-	proto.RegisterType((*MsgCreatePost)(nil), "blog.blog.MsgCreatePost")
-	proto.RegisterType((*MsgCreatePostResponse)(nil), "blog.blog.MsgCreatePostResponse")
+	proto.RegisterType((*MsgCreatePost)(nil), "ntnft.blog.MsgCreatePost")
+	proto.RegisterType((*MsgCreatePostResponse)(nil), "ntnft.blog.MsgCreatePostResponse")
+	proto.RegisterType((*MsgRequestAccess)(nil), "ntnft.blog.MsgRequestAccess")
+	proto.RegisterType((*MsgRequestAccessResponse)(nil), "ntnft.blog.MsgRequestAccessResponse")
 }
 
 func init() { proto.RegisterFile("blog/tx.proto", fileDescriptor_90382f40c04acbba) }
 
 var fileDescriptor_90382f40c04acbba = []byte{
-	// 207 bytes of a gzipped FileDescriptorProto
+	// 265 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x4d, 0xca, 0xc9, 0x4f,
-	0xd7, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x04, 0x71, 0xf5, 0x40, 0x84,
-	0x52, 0x30, 0x17, 0xaf, 0x6f, 0x71, 0xba, 0x73, 0x51, 0x6a, 0x62, 0x49, 0x6a, 0x40, 0x7e, 0x71,
-	0x89, 0x90, 0x04, 0x17, 0x7b, 0x32, 0x88, 0x97, 0x5f, 0x24, 0xc1, 0xa8, 0xc0, 0xa8, 0xc1, 0x19,
-	0x04, 0xe3, 0x0a, 0x89, 0x70, 0xb1, 0x96, 0x64, 0x96, 0xe4, 0xa4, 0x4a, 0x30, 0x81, 0xc5, 0x21,
-	0x1c, 0x21, 0x21, 0x2e, 0x96, 0xa4, 0xfc, 0x94, 0x4a, 0x09, 0x66, 0xb0, 0x20, 0x98, 0xad, 0xa4,
-	0xce, 0x25, 0x8a, 0x62, 0x68, 0x50, 0x6a, 0x71, 0x41, 0x7e, 0x5e, 0x71, 0xaa, 0x10, 0x1f, 0x17,
-	0x53, 0x66, 0x0a, 0xd8, 0x5c, 0x96, 0x20, 0xa6, 0xcc, 0x14, 0x23, 0x7f, 0x2e, 0x66, 0xdf, 0xe2,
-	0x74, 0x21, 0x0f, 0x2e, 0x2e, 0x64, 0x17, 0xe8, 0xc1, 0x9d, 0xa7, 0x87, 0x62, 0x8c, 0x94, 0x02,
-	0x2e, 0x19, 0x98, 0x05, 0x4e, 0xda, 0x27, 0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0,
-	0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c, 0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x10,
-	0x25, 0x08, 0x0e, 0x82, 0x0a, 0x7d, 0x48, 0x48, 0x54, 0x16, 0xa4, 0x16, 0x27, 0xb1, 0x81, 0x43,
-	0xc3, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x66, 0x90, 0xfa, 0x6f, 0x1e, 0x01, 0x00, 0x00,
+	0xd7, 0x2f, 0xa9, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0xca, 0x2b, 0xc9, 0x4b, 0x2b,
+	0xd1, 0x03, 0x09, 0x2a, 0x05, 0x73, 0xf1, 0xfa, 0x16, 0xa7, 0x3b, 0x17, 0xa5, 0x26, 0x96, 0xa4,
+	0x06, 0xe4, 0x17, 0x97, 0x08, 0x49, 0x70, 0xb1, 0x27, 0x83, 0x78, 0xf9, 0x45, 0x12, 0x8c, 0x0a,
+	0x8c, 0x1a, 0x9c, 0x41, 0x30, 0xae, 0x90, 0x08, 0x17, 0x6b, 0x49, 0x66, 0x49, 0x4e, 0xaa, 0x04,
+	0x13, 0x58, 0x1c, 0xc2, 0x11, 0x12, 0xe2, 0x62, 0x49, 0xca, 0x4f, 0xa9, 0x94, 0x60, 0x06, 0x0b,
+	0x82, 0xd9, 0x4a, 0xea, 0x5c, 0xa2, 0x28, 0x86, 0x06, 0xa5, 0x16, 0x17, 0xe4, 0xe7, 0x15, 0xa7,
+	0x0a, 0xf1, 0x71, 0x31, 0x65, 0xa6, 0x80, 0xcd, 0x65, 0x09, 0x62, 0xca, 0x4c, 0x51, 0xd2, 0xe1,
+	0x12, 0xf0, 0x2d, 0x4e, 0x0f, 0x4a, 0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x71, 0x4c, 0x4e, 0x4e, 0x2d,
+	0x2e, 0xc6, 0xed, 0x00, 0x25, 0x29, 0x2e, 0x09, 0x74, 0xd5, 0x30, 0x93, 0x8d, 0x96, 0x31, 0x72,
+	0x31, 0xfb, 0x16, 0xa7, 0x0b, 0x79, 0x71, 0x71, 0x21, 0x79, 0x46, 0x52, 0x0f, 0xe1, 0x55, 0x3d,
+	0x14, 0x27, 0x49, 0x29, 0xe2, 0x94, 0x82, 0xbb, 0x36, 0x98, 0x8b, 0x17, 0xd5, 0x69, 0x32, 0x68,
+	0x7a, 0x50, 0x64, 0xa5, 0x54, 0xf0, 0xc9, 0xc2, 0x0c, 0x75, 0xd2, 0x3d, 0xf1, 0x48, 0x8e, 0xf1,
+	0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0x27, 0x3c, 0x96, 0x63, 0xb8, 0xf0, 0x58, 0x8e,
+	0xe1, 0xc6, 0x63, 0x39, 0x86, 0x28, 0xe1, 0xbc, 0x12, 0xdd, 0xbc, 0xb4, 0x12, 0xfd, 0x0a, 0x7d,
+	0x48, 0x74, 0x55, 0x16, 0xa4, 0x16, 0x27, 0xb1, 0x81, 0xa3, 0xcc, 0x18, 0x10, 0x00, 0x00, 0xff,
+	0xff, 0x69, 0xfe, 0xd0, 0x04, 0xc3, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -168,6 +254,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	CreatePost(ctx context.Context, in *MsgCreatePost, opts ...grpc.CallOption) (*MsgCreatePostResponse, error)
+	RequestAccess(ctx context.Context, in *MsgRequestAccess, opts ...grpc.CallOption) (*MsgRequestAccessResponse, error)
 }
 
 type msgClient struct {
@@ -180,7 +267,16 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 
 func (c *msgClient) CreatePost(ctx context.Context, in *MsgCreatePost, opts ...grpc.CallOption) (*MsgCreatePostResponse, error) {
 	out := new(MsgCreatePostResponse)
-	err := c.cc.Invoke(ctx, "/blog.blog.Msg/CreatePost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/ntnft.blog.Msg/CreatePost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *msgClient) RequestAccess(ctx context.Context, in *MsgRequestAccess, opts ...grpc.CallOption) (*MsgRequestAccessResponse, error) {
+	out := new(MsgRequestAccessResponse)
+	err := c.cc.Invoke(ctx, "/ntnft.blog.Msg/RequestAccess", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -190,6 +286,7 @@ func (c *msgClient) CreatePost(ctx context.Context, in *MsgCreatePost, opts ...g
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	CreatePost(context.Context, *MsgCreatePost) (*MsgCreatePostResponse, error)
+	RequestAccess(context.Context, *MsgRequestAccess) (*MsgRequestAccessResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -198,6 +295,9 @@ type UnimplementedMsgServer struct {
 
 func (*UnimplementedMsgServer) CreatePost(ctx context.Context, req *MsgCreatePost) (*MsgCreatePostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePost not implemented")
+}
+func (*UnimplementedMsgServer) RequestAccess(ctx context.Context, req *MsgRequestAccess) (*MsgRequestAccessResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RequestAccess not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -214,7 +314,7 @@ func _Msg_CreatePost_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/blog.blog.Msg/CreatePost",
+		FullMethod: "/ntnft.blog.Msg/CreatePost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MsgServer).CreatePost(ctx, req.(*MsgCreatePost))
@@ -222,13 +322,35 @@ func _Msg_CreatePost_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_RequestAccess_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgRequestAccess)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).RequestAccess(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/ntnft.blog.Msg/RequestAccess",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).RequestAccess(ctx, req.(*MsgRequestAccess))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "blog.blog.Msg",
+	ServiceName: "ntnft.blog.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "CreatePost",
 			Handler:    _Msg_CreatePost_Handler,
+		},
+		{
+			MethodName: "RequestAccess",
+			Handler:    _Msg_RequestAccess_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -307,6 +429,59 @@ func (m *MsgCreatePostResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgRequestAccess) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRequestAccess) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRequestAccess) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgRequestAccessResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgRequestAccessResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgRequestAccessResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -348,6 +523,28 @@ func (m *MsgCreatePostResponse) Size() (n int) {
 	if m.Id != 0 {
 		n += 1 + sovTx(uint64(m.Id))
 	}
+	return n
+}
+
+func (m *MsgRequestAccess) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgRequestAccessResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
 	return n
 }
 
@@ -551,6 +748,138 @@ func (m *MsgCreatePostResponse) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRequestAccess) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRequestAccess: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRequestAccess: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgRequestAccessResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgRequestAccessResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgRequestAccessResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTx(dAtA[iNdEx:])

@@ -1,12 +1,12 @@
 syntax = "proto3";
-package blog.blog;
+package ntnft.blog;
 
 import "gogoproto/gogo.proto";
 import "google/protobuf/any.proto";
 import "blog/params.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
-option go_package = "blog/x/blog/types";
+option go_package = "nt-nft/x/blog/types";
 
 // GenesisState defines the blog module's genesis state.
 message GenesisState {

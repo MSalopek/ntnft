@@ -29,6 +29,18 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCreatePost int = 100
 
+	opWeightMsgRequestAccess = "op_weight_msg_request_access"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRequestAccess int = 100
+
+	opWeightMsgRequestAccess = "op_weight_msg_request_access"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRequestAccess int = 100
+
+	opWeightMsgRequestAccess = "op_weight_msg_request_access"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRequestAccess int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -72,6 +84,39 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCreatePost,
 		blogsimulation.SimulateMsgCreatePost(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRequestAccess int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRequestAccess, &weightMsgRequestAccess, nil,
+		func(_ *rand.Rand) {
+			weightMsgRequestAccess = defaultWeightMsgRequestAccess
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRequestAccess,
+		blogsimulation.SimulateMsgRequestAccess(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRequestAccess int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRequestAccess, &weightMsgRequestAccess, nil,
+		func(_ *rand.Rand) {
+			weightMsgRequestAccess = defaultWeightMsgRequestAccess
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRequestAccess,
+		blogsimulation.SimulateMsgRequestAccess(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRequestAccess int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRequestAccess, &weightMsgRequestAccess, nil,
+		func(_ *rand.Rand) {
+			weightMsgRequestAccess = defaultWeightMsgRequestAccess
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRequestAccess,
+		blogsimulation.SimulateMsgRequestAccess(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

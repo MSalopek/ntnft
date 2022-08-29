@@ -1,5 +1,5 @@
 syntax = "proto3";
-package blog.blog;
+package ntnft.blog;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
@@ -10,7 +10,7 @@ import "blog/post.proto";
 
 // this line is used by starport scaffolding # 1
 
-option go_package = "blog/x/blog/types";
+option go_package = "nt-nft/x/blog/types";
 
 // Query defines the gRPC querier service.
 service Query {

@@ -5,20 +5,20 @@ import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
 import { MsgMintToken } from "./types/ntnft/tx";
-import { MsgRemoveToken } from "./types/ntnft/tx";
-import { MsgCreateModuleAccountClass } from "./types/ntnft/tx";
-import { MsgEditClass } from "./types/ntnft/tx";
 import { MsgCreateClass } from "./types/ntnft/tx";
+import { MsgEditClass } from "./types/ntnft/tx";
+import { MsgRemoveToken } from "./types/ntnft/tx";
 import { MsgEditToken } from "./types/ntnft/tx";
+import { MsgCreateModuleAccountClass } from "./types/ntnft/tx";
 
 
 const types = [
   ["/ntnft.ntnft.MsgMintToken", MsgMintToken],
-  ["/ntnft.ntnft.MsgRemoveToken", MsgRemoveToken],
-  ["/ntnft.ntnft.MsgCreateModuleAccountClass", MsgCreateModuleAccountClass],
-  ["/ntnft.ntnft.MsgEditClass", MsgEditClass],
   ["/ntnft.ntnft.MsgCreateClass", MsgCreateClass],
+  ["/ntnft.ntnft.MsgEditClass", MsgEditClass],
+  ["/ntnft.ntnft.MsgRemoveToken", MsgRemoveToken],
   ["/ntnft.ntnft.MsgEditToken", MsgEditToken],
+  ["/ntnft.ntnft.MsgCreateModuleAccountClass", MsgCreateModuleAccountClass],
   
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -52,11 +52,11 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
     msgMintToken: (data: MsgMintToken): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgMintToken", value: MsgMintToken.fromPartial( data ) }),
-    msgRemoveToken: (data: MsgRemoveToken): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgRemoveToken", value: MsgRemoveToken.fromPartial( data ) }),
-    msgCreateModuleAccountClass: (data: MsgCreateModuleAccountClass): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgCreateModuleAccountClass", value: MsgCreateModuleAccountClass.fromPartial( data ) }),
-    msgEditClass: (data: MsgEditClass): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgEditClass", value: MsgEditClass.fromPartial( data ) }),
     msgCreateClass: (data: MsgCreateClass): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgCreateClass", value: MsgCreateClass.fromPartial( data ) }),
+    msgEditClass: (data: MsgEditClass): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgEditClass", value: MsgEditClass.fromPartial( data ) }),
+    msgRemoveToken: (data: MsgRemoveToken): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgRemoveToken", value: MsgRemoveToken.fromPartial( data ) }),
     msgEditToken: (data: MsgEditToken): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgEditToken", value: MsgEditToken.fromPartial( data ) }),
+    msgCreateModuleAccountClass: (data: MsgCreateModuleAccountClass): EncodeObject => ({ typeUrl: "/ntnft.ntnft.MsgCreateModuleAccountClass", value: MsgCreateModuleAccountClass.fromPartial( data ) }),
     
   };
 };
