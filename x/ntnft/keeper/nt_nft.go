@@ -73,21 +73,66 @@ func (k Keeper) MintToken(ctx sdk.Context, classId, createAddr string) (types.Nt
 	return token, nil
 }
 
+// SafeRemoveToken removes a token with tokenId.
+// Tokens can only be removed if the callerAddr owns either the NtNFT or the Class.
+// Function will panic if either the Class.Creator or NtNFT.Owner is not set.
+func (k Keeper) SafeRemoveToken(ctx sdk.Context, tokenId, callerAddr string) error {
+	tk, found := k.GetNtNft(ctx, tokenId)
+	if !found {
+		return nil
+	}
+
+	if tk.Owner == "" {
+		panic(sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Token owner not set"))
+	}
+
+	owner, found := k.GetOwner(ctx, tk.Owner)
+	if !found {
+		return nil
+	}
+
+	cls, found := k.GetClass(ctx, tk.ClassId)
+	if !found {
+		return nil
+	}
+
+	if cls.Creator == "" {
+		panic(sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Class creatir not set"))
+	}
+
+	if tk.Owner == callerAddr || cls.Creator == callerAddr {
+		k.RemoveNtNft(ctx, tokenId)
+		var update []*types.OwnerCollection
+		for _, elem := range owner.Collection {
+			// token matching the tokenId and Class.Index will be ommited from update slice
+			if elem.ClassId != cls.Index && elem.Token.Index != tokenId {
+				update = append(update, elem)
+			}
+		}
+		owner.Collection = update
+		k.SetOwner(ctx, owner)
+	}
+
+	return nil
+}
+
 // SetNtNft set a specific ntNft in the store from its index
 func (k Keeper) SetNtNft(ctx sdk.Context, ntNft types.NtNft) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NtNftKeyPrefix))
 	b := k.cdc.MustMarshal(&ntNft)
-	store.Set(types.NtNftKey(
-		ntNft.Index,
-	), b)
+	store.Set(types.NtNftKey(ntNft.Index), b)
+}
+
+// RemoveNtNft removes a ntNft from the store
+func (k Keeper) RemoveNtNft(ctx sdk.Context, index string) {
+	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NtNftKeyPrefix))
+	store.Delete(types.NtNftKey(
+		index,
+	))
 }
 
 // GetNtNft returns a ntNft from its index
-func (k Keeper) GetNtNft(
-	ctx sdk.Context,
-	index string,
-
-) (val types.NtNft, found bool) {
+func (k Keeper) GetNtNft(ctx sdk.Context, index string) (val types.NtNft, found bool) {
 	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NtNftKeyPrefix))
 
 	b := store.Get(types.NtNftKey(
@@ -99,18 +144,6 @@ func (k Keeper) GetNtNft(
 
 	k.cdc.MustUnmarshal(b, &val)
 	return val, true
-}
-
-// RemoveNtNft removes a ntNft from the store
-func (k Keeper) RemoveNtNft(
-	ctx sdk.Context,
-	index string,
-
-) {
-	store := prefix.NewStore(ctx.KVStore(k.storeKey), types.KeyPrefix(types.NtNftKeyPrefix))
-	store.Delete(types.NtNftKey(
-		index,
-	))
 }
 
 // GetAllNtNft returns all ntNft
