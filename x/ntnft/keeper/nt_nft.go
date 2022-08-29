@@ -76,6 +76,7 @@ func (k Keeper) MintToken(ctx sdk.Context, classId, createAddr string) (types.Nt
 // SafeRemoveToken removes a token with tokenId.
 // Tokens can only be removed if the callerAddr owns either the NtNFT or the Class.
 // Function will panic if either the Class.Creator or NtNFT.Owner is not set.
+// Function will error if called by callerAddr that does not match either Class.Creator or NtNFT.Owner.
 func (k Keeper) SafeRemoveToken(ctx sdk.Context, tokenId, callerAddr string) error {
 	tk, found := k.GetNtNft(ctx, tokenId)
 	if !found {
@@ -111,9 +112,11 @@ func (k Keeper) SafeRemoveToken(ctx sdk.Context, tokenId, callerAddr string) err
 		}
 		owner.Collection = update
 		k.SetOwner(ctx, owner)
+
+		return nil
 	}
 
-	return nil
+	return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "")
 }
 
 // SetNtNft set a specific ntNft in the store from its index
