@@ -30,7 +30,7 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdMint())
+	cmd.AddCommand(CmdMintToken())
 	cmd.AddCommand(CmdCreateClass())
 	cmd.AddCommand(CmdCreateModuleAccountClass())
 	cmd.AddCommand(CmdRemoveToken())

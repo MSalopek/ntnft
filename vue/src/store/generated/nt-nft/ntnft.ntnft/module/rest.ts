@@ -23,6 +23,11 @@ export interface NtnftClass {
 export interface NtnftMsgCreateClassResponse {
   creator?: string;
   class_id?: string;
+  name?: string;
+  price?: string;
+  uri?: string;
+  uriHash?: string;
+  data?: string;
 }
 
 export interface NtnftMsgCreateModuleAccountClassResponse {
@@ -30,7 +35,15 @@ export interface NtnftMsgCreateModuleAccountClassResponse {
   owner?: string;
 }
 
-export type NtnftMsgEditClassResponse = object;
+export interface NtnftMsgEditClassResponse {
+  class_id?: string;
+  creator?: string;
+  name?: string;
+  price?: string;
+  uri?: string;
+  uriHash?: string;
+  data?: string;
+}
 
 export interface NtnftMsgEditTokenResponse {
   class_id?: string;
@@ -41,10 +54,13 @@ export interface NtnftMsgEditTokenResponse {
   data?: string;
 }
 
-export interface NtnftMsgMintResponse {
+export interface NtnftMsgMintTokenResponse {
   class_id?: string;
   token_id?: string;
   owner?: string;
+  uri?: string;
+  uriHash?: string;
+  data?: string;
 }
 
 export type NtnftMsgRemoveTokenResponse = object;
@@ -187,6 +203,13 @@ export interface V1Beta1PageRequest {
    * is set.
    */
   count_total?: boolean;
+
+  /**
+   * reverse is set to true if results are to be returned in the descending order.
+   *
+   * Since: cosmos-sdk 0.43
+   */
+  reverse?: boolean;
 }
 
 /**
@@ -416,6 +439,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -457,6 +481,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>
@@ -498,6 +523,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       "pagination.offset"?: string;
       "pagination.limit"?: string;
       "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
     },
     params: RequestParams = {},
   ) =>

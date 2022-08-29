@@ -3,15 +3,16 @@ package ntnft
 import (
 	"math/rand"
 
+	"nt-nft/testutil/sample"
+	ntnftsimulation "nt-nft/x/ntnft/simulation"
+	"nt-nft/x/ntnft/types"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	simappparams "github.com/cosmos/cosmos-sdk/simapp/params"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
 	"github.com/cosmos/cosmos-sdk/x/simulation"
-	"nt-nft/testutil/sample"
-	ntnftsimulation "nt-nft/x/ntnft/simulation"
-	"nt-nft/x/ntnft/types"
 )
 
 // avoid unused import issue
@@ -24,9 +25,9 @@ var (
 )
 
 const (
-	opWeightMsgMint = "op_weight_msg_mint"
+	opWeightMsgMintToken = "op_weight_msg_mint_token"
 	// TODO: Determine the simulation weight value
-	defaultWeightMsgMint int = 100
+	defaultWeightMsgMintToken int = 100
 
 	opWeightMsgCreateClass = "op_weight_msg_create_class"
 	// TODO: Determine the simulation weight value
@@ -82,15 +83,15 @@ func (am AppModule) RegisterStoreDecoder(_ sdk.StoreDecoderRegistry) {}
 func (am AppModule) WeightedOperations(simState module.SimulationState) []simtypes.WeightedOperation {
 	operations := make([]simtypes.WeightedOperation, 0)
 
-	var weightMsgMint int
-	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgMint, &weightMsgMint, nil,
+	var weightMsgMintToken int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgMintToken, &weightMsgMintToken, nil,
 		func(_ *rand.Rand) {
-			weightMsgMint = defaultWeightMsgMint
+			weightMsgMintToken = defaultWeightMsgMintToken
 		},
 	)
 	operations = append(operations, simulation.NewWeightedOperation(
-		weightMsgMint,
-		ntnftsimulation.SimulateMsgMint(am.accountKeeper, am.bankKeeper, am.keeper),
+		weightMsgMintToken,
+		ntnftsimulation.SimulateMsgMintToken(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	var weightMsgCreateClass int

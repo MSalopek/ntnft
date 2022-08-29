@@ -30321,6 +30321,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/nt-nft/ntnft/class/{index}':
@@ -30518,6 +30528,16 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
+          in: query
+          required: false
+          type: boolean
       tags:
         - Query
   '/nt-nft/ntnft/nt_nft/{index}':
@@ -30700,6 +30720,16 @@ paths:
             when key
 
             is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+
+
+            Since: cosmos-sdk 0.43
           in: query
           required: false
           type: boolean
@@ -52235,6 +52265,16 @@ definitions:
         type: string
       class_id:
         type: string
+      name:
+        type: string
+      price:
+        type: string
+      uri:
+        type: string
+      uriHash:
+        type: string
+      data:
+        type: string
   ntnft.ntnft.MsgCreateModuleAccountClassResponse:
     type: object
     properties:
@@ -52244,6 +52284,21 @@ definitions:
         type: string
   ntnft.ntnft.MsgEditClassResponse:
     type: object
+    properties:
+      class_id:
+        type: string
+      creator:
+        type: string
+      name:
+        type: string
+      price:
+        type: string
+      uri:
+        type: string
+      uriHash:
+        type: string
+      data:
+        type: string
   ntnft.ntnft.MsgEditTokenResponse:
     type: object
     properties:
@@ -52259,7 +52314,7 @@ definitions:
         type: string
       data:
         type: string
-  ntnft.ntnft.MsgMintResponse:
+  ntnft.ntnft.MsgMintTokenResponse:
     type: object
     properties:
       class_id:
@@ -52267,6 +52322,12 @@ definitions:
       token_id:
         type: string
       owner:
+        type: string
+      uri:
+        type: string
+      uriHash:
+        type: string
+      data:
         type: string
   ntnft.ntnft.MsgRemoveTokenResponse:
     type: object

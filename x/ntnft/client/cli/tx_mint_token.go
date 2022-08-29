@@ -13,9 +13,9 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdMint() *cobra.Command {
+func CmdMintToken() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "mint [classId]",
+		Use:   "mint-token [classId]",
 		Short: "Broadcast message mint",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -26,7 +26,7 @@ func CmdMint() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgMint(
+			msg := types.NewMsgMintToken(
 				clientCtx.GetFromAddress().String(),
 				classId,
 			)

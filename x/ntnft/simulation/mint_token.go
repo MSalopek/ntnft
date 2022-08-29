@@ -3,14 +3,15 @@ package simulation
 import (
 	"math/rand"
 
+	"nt-nft/x/ntnft/keeper"
+	"nt-nft/x/ntnft/types"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
-	"nt-nft/x/ntnft/keeper"
-	"nt-nft/x/ntnft/types"
 )
 
-func SimulateMsgMint(
+func SimulateMsgMintToken(
 	ak types.AccountKeeper,
 	bk types.BankKeeper,
 	k keeper.Keeper,
@@ -18,7 +19,7 @@ func SimulateMsgMint(
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {
 		simAccount, _ := simtypes.RandomAcc(r, accs)
-		msg := &types.MsgMint{
+		msg := &types.MsgMintToken{
 			Creator: simAccount.Address.String(),
 		}
 
