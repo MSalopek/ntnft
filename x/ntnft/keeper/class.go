@@ -10,6 +10,43 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+// SafeEditClass removes updates NtNFT fields: uri, uri_hash and data.
+// Tokens can only be edited if the callerAddr owns either the NtNFT or the Class.
+// Function will panic if either the Class.Creator or NtNFT.Owner is not set.
+// Function will error if called by callerAddr that does not match either Class.Creator or NtNFT.Owner.
+func (k Keeper) SafeEditClass(ctx sdk.Context, editClass types.Class, callerAddr string) (types.Class, error) {
+	cls, found := k.GetClass(ctx, editClass.Index)
+	if !found {
+		return types.Class{}, nil
+	}
+
+	if cls.Creator == "" {
+		panic(sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Class creator not set"))
+	}
+
+	if cls.Creator == callerAddr {
+		updClass := types.Class{
+			Index:   cls.Index,
+			Name:    cls.Name,
+			Creator: cls.Creator,
+		}
+		if editClass.Uri != "" {
+			updClass.Uri = editClass.Uri
+		}
+		if editClass.Uri != "" {
+			updClass.UriHash = editClass.UriHash
+		}
+		if editClass.Data != "" {
+			updClass.Data = editClass.Data
+		}
+		k.SetClass(ctx, updClass)
+
+		return updClass, nil
+	}
+
+	return types.Class{}, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Address not authorized")
+}
+
 // SetModuleAccountClass creates a Class with module account address as Class.Creator.
 func (k Keeper) SetModuleAccountClass(ctx sdk.Context, name, price, moduleName string) (types.Class, error) {
 	moduleAcc := k.accountKeeper.GetModuleAccount(ctx, moduleName)
