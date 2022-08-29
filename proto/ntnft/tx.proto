@@ -24,7 +24,7 @@ message MsgMintToken {
   string data = 5;
 }
 
-message MsgMintResponse {
+message MsgMintTokenResponse {
   string class_id = 1;
   string token_id = 2;
   string owner = 3;
