@@ -21,7 +21,7 @@ func (k msgServer) CreatePost(goCtx context.Context, msg *types.MsgCreatePost) (
 		panic("auth token class not set on blog module")
 	}
 
-	if !k.ntnftKeeper.OwnerHasClass(ctx, string(authClass), msg.Creator) {
+	if !k.ntnftKeeper.OwnerHasClass(ctx, msg.Creator, string(authClass)) {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "address not registered")
 	}
 

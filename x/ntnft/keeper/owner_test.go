@@ -62,3 +62,19 @@ func TestOwnerGetAll(t *testing.T) {
 		nullify.Fill(keeper.GetAllOwner(ctx)),
 	)
 }
+
+func TestOwnerHasClass(t *testing.T) {
+	keeper, ctx := keepertest.NtnftKeeper(t)
+	owner := types.Owner{
+		Index:   "0",
+		Address: "0",
+		Collection: []*types.OwnerCollection{
+			{
+				ClassId: "1",
+			},
+		},
+	}
+	keeper.SetOwner(ctx, owner)
+	hasClass := keeper.OwnerHasClass(ctx, "0", "1")
+	require.EqualValues(t, true, hasClass, "OwnerHasClass returned false; should be true")
+}

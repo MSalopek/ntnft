@@ -41,11 +41,22 @@ $ ntnftd q ntnft list-owner
 
 ## x/blog module
 ### Init
-* ntnft git:(main) ✗ ntnftd tx blog init --from bob --chain-id=ntnft --yes
+* ntnftd tx blog init --from bob --chain-id=ntnft --yes
 
 ### Request access
 * ntnftd tx blog request-access --from bob --chain-id=ntnft --yes
 * confirm: ntnftd q ntnft list-nt-nft
 
 ### Post as registered
-* 
+* ntnftd tx blog create-post first post --from bob --chain-id=ntnft --yes
+
+### Check post
+* ntnftd q blog posts
+
+### Create post as unregistered
+* ntnftd tx blog create-post second post --from alice --chain-id=ntnft --yes
+```
+raw_log: 'failed to execute message; message index: 0: address not registered: invalid
+  request'
+
+```
