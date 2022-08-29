@@ -50,6 +50,7 @@ func (k Keeper) MintToken(ctx sdk.Context, classId, createAddr string) (types.Nt
 		// setting creator address index/Id
 		// avoids checking if creator owns token of class
 		// NOTE: it would be better to use a counter for each class
+		// But this way there can only be 1 instance of Class per Owner.
 		Index:   requester.String(),
 		ClassId: class.Index,
 		Owner:   requester.String(),
@@ -119,14 +120,14 @@ func (k Keeper) SafeRemoveToken(ctx sdk.Context, tokenId, callerAddr string) err
 	return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Address not authorized")
 }
 
-// SafeEditToken removes updates NtNFT fields: uri, uri_hash and data.
+// SafeEditToken updates NtNFT fields: uri, uri_hash and data.
 // Tokens can only be edited if the callerAddr owns either the NtNFT or the Class.
 // Function will panic if either the Class.Creator or NtNFT.Owner is not set.
 // Function will error if called by callerAddr that does not match either Class.Creator or NtNFT.Owner.
-func (k Keeper) SafeEditToken(ctx sdk.Context, editToken types.NtNft, callerAddr string) error {
+func (k Keeper) SafeEditToken(ctx sdk.Context, editToken types.NtNft, callerAddr string) (types.NtNft, error) {
 	tk, found := k.GetNtNft(ctx, editToken.Index)
 	if !found {
-		return nil
+		return types.NtNft{}, nil
 	}
 
 	if tk.Owner == "" {
@@ -135,12 +136,12 @@ func (k Keeper) SafeEditToken(ctx sdk.Context, editToken types.NtNft, callerAddr
 
 	owner, found := k.GetOwner(ctx, tk.Owner)
 	if !found {
-		return nil
+		return types.NtNft{}, nil
 	}
 
 	cls, found := k.GetClass(ctx, tk.ClassId)
 	if !found {
-		return nil
+		return types.NtNft{}, nil
 	}
 
 	if cls.Creator == "" {
@@ -148,31 +149,42 @@ func (k Keeper) SafeEditToken(ctx sdk.Context, editToken types.NtNft, callerAddr
 	}
 
 	if tk.Owner == callerAddr || cls.Creator == callerAddr {
-		editToken.Index = tk.Index
-		editToken.ClassId = tk.ClassId
-		editToken.Owner = tk.Owner
-		k.SetNtNft(ctx, editToken)
+		updToken := types.NtNft{
+			Index:   tk.Index,
+			ClassId: tk.ClassId,
+			Owner:   tk.Owner,
+		}
+		if editToken.Uri != "" {
+			updToken.Uri = editToken.Uri
+		}
+		if editToken.Uri != "" {
+			updToken.UriHash = editToken.UriHash
+		}
+		if editToken.Data != "" {
+			updToken.Data = editToken.Data
+		}
+		k.SetNtNft(ctx, updToken)
 
-		var update []*types.OwnerCollection
+		var updOwnerCol []*types.OwnerCollection
 		for _, elem := range owner.Collection {
 			if elem.Token.Index == tk.Index {
 				oc := types.OwnerCollection{
 					ClassId: tk.ClassId,
-					Token:   &editToken,
+					Token:   &updToken,
 				}
-				update = append(update, &oc)
+				updOwnerCol = append(updOwnerCol, &oc)
 				continue
 			}
 
-			update = append(update, elem)
+			updOwnerCol = append(updOwnerCol, elem)
 		}
-		owner.Collection = update
+		owner.Collection = updOwnerCol
 		k.SetOwner(ctx, owner)
 
-		return nil
+		return editToken, nil
 	}
 
-	return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Address not authorized")
+	return types.NtNft{}, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Address not authorized")
 }
 
 // SetNtNft set a specific ntNft in the store from its index
