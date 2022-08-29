@@ -52724,6 +52724,19 @@ definitions:
         format: uint64
   ntnft.blog.MsgRequestAccessResponse:
     type: object
+    properties:
+      tokenId:
+        type: string
+      classId:
+        type: string
+      owner:
+        type: string
+      uri:
+        type: string
+      uriHash:
+        type: string
+      data:
+        type: string
   ntnft.blog.Params:
     type: object
     description: Params defines the parameters for the module.

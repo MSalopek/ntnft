@@ -18,7 +18,14 @@ export interface MsgRequestAccess {
   creator: string;
 }
 
-export interface MsgRequestAccessResponse {}
+export interface MsgRequestAccessResponse {
+  tokenId: string;
+  classId: string;
+  owner: string;
+  uri: string;
+  uriHash: string;
+  data: string;
+}
 
 const baseMsgCreatePost: object = { creator: "", title: "", body: "" };
 
@@ -224,13 +231,38 @@ export const MsgRequestAccess = {
   },
 };
 
-const baseMsgRequestAccessResponse: object = {};
+const baseMsgRequestAccessResponse: object = {
+  tokenId: "",
+  classId: "",
+  owner: "",
+  uri: "",
+  uriHash: "",
+  data: "",
+};
 
 export const MsgRequestAccessResponse = {
   encode(
-    _: MsgRequestAccessResponse,
+    message: MsgRequestAccessResponse,
     writer: Writer = Writer.create()
   ): Writer {
+    if (message.tokenId !== "") {
+      writer.uint32(10).string(message.tokenId);
+    }
+    if (message.classId !== "") {
+      writer.uint32(18).string(message.classId);
+    }
+    if (message.owner !== "") {
+      writer.uint32(26).string(message.owner);
+    }
+    if (message.uri !== "") {
+      writer.uint32(34).string(message.uri);
+    }
+    if (message.uriHash !== "") {
+      writer.uint32(42).string(message.uriHash);
+    }
+    if (message.data !== "") {
+      writer.uint32(50).string(message.data);
+    }
     return writer;
   },
 
@@ -246,6 +278,24 @@ export const MsgRequestAccessResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.tokenId = reader.string();
+          break;
+        case 2:
+          message.classId = reader.string();
+          break;
+        case 3:
+          message.owner = reader.string();
+          break;
+        case 4:
+          message.uri = reader.string();
+          break;
+        case 5:
+          message.uriHash = reader.string();
+          break;
+        case 6:
+          message.data = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -254,24 +304,90 @@ export const MsgRequestAccessResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgRequestAccessResponse {
+  fromJSON(object: any): MsgRequestAccessResponse {
     const message = {
       ...baseMsgRequestAccessResponse,
     } as MsgRequestAccessResponse;
+    if (object.tokenId !== undefined && object.tokenId !== null) {
+      message.tokenId = String(object.tokenId);
+    } else {
+      message.tokenId = "";
+    }
+    if (object.classId !== undefined && object.classId !== null) {
+      message.classId = String(object.classId);
+    } else {
+      message.classId = "";
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = String(object.owner);
+    } else {
+      message.owner = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = String(object.uri);
+    } else {
+      message.uri = "";
+    }
+    if (object.uriHash !== undefined && object.uriHash !== null) {
+      message.uriHash = String(object.uriHash);
+    } else {
+      message.uriHash = "";
+    }
+    if (object.data !== undefined && object.data !== null) {
+      message.data = String(object.data);
+    } else {
+      message.data = "";
+    }
     return message;
   },
 
-  toJSON(_: MsgRequestAccessResponse): unknown {
+  toJSON(message: MsgRequestAccessResponse): unknown {
     const obj: any = {};
+    message.tokenId !== undefined && (obj.tokenId = message.tokenId);
+    message.classId !== undefined && (obj.classId = message.classId);
+    message.owner !== undefined && (obj.owner = message.owner);
+    message.uri !== undefined && (obj.uri = message.uri);
+    message.uriHash !== undefined && (obj.uriHash = message.uriHash);
+    message.data !== undefined && (obj.data = message.data);
     return obj;
   },
 
   fromPartial(
-    _: DeepPartial<MsgRequestAccessResponse>
+    object: DeepPartial<MsgRequestAccessResponse>
   ): MsgRequestAccessResponse {
     const message = {
       ...baseMsgRequestAccessResponse,
     } as MsgRequestAccessResponse;
+    if (object.tokenId !== undefined && object.tokenId !== null) {
+      message.tokenId = object.tokenId;
+    } else {
+      message.tokenId = "";
+    }
+    if (object.classId !== undefined && object.classId !== null) {
+      message.classId = object.classId;
+    } else {
+      message.classId = "";
+    }
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    } else {
+      message.owner = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = object.uri;
+    } else {
+      message.uri = "";
+    }
+    if (object.uriHash !== undefined && object.uriHash !== null) {
+      message.uriHash = object.uriHash;
+    } else {
+      message.uriHash = "";
+    }
+    if (object.data !== undefined && object.data !== null) {
+      message.data = object.data;
+    } else {
+      message.data = "";
+    }
     return message;
   },
 };

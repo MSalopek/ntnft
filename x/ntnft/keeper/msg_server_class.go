@@ -71,9 +71,10 @@ func (k msgServer) EditClass(goCtx context.Context, msg *types.MsgEditClass) (*t
 	}, nil
 }
 
-// CreateModuleAccountClass is used to create class as module accounts.
+// CreateModuleAccountClass is used to create Class for module account.
 // NOTE: this is a hacky way of doing things.
-// I needed this to be able to create a Class assigned to module account for exporting genesis.
+// I needed this to be able to create a Class assigned to module account for exporting genesis and to make testing easier
+// This should not be in any production apps since any user could create class for any module.
 func (k msgServer) CreateModuleAccountClass(goCtx context.Context, msg *types.MsgCreateModuleAccountClass) (*types.MsgCreateModuleAccountClassResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
