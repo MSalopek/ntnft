@@ -104,6 +104,7 @@ func (k Keeper) SafeRemoveToken(ctx sdk.Context, tokenId, callerAddr string) err
 
 	if tk.Owner == callerAddr || cls.Creator == callerAddr {
 		k.RemoveNtNft(ctx, tokenId)
+
 		var update []*types.OwnerCollection
 		for _, elem := range owner.Collection {
 			// token matching the tokenId and Class.Index will be ommited from update slice
@@ -113,6 +114,16 @@ func (k Keeper) SafeRemoveToken(ctx sdk.Context, tokenId, callerAddr string) err
 		}
 		owner.Collection = update
 		k.SetOwner(ctx, owner)
+
+		var updateTokens []*types.NtNft
+		for _, elem := range cls.Tokens {
+			if elem.Index != tk.Index && elem.Owner != tk.Owner {
+				// token matching the tokenId and Owner will be ommited from update slice
+				updateTokens = append(updateTokens, elem)
+			}
+		}
+		cls.Tokens = updateTokens
+		k.SetClass(ctx, cls)
 
 		return nil
 	}

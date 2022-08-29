@@ -50,5 +50,10 @@ func (msg *MsgCreateClass) ValidateBasic() error {
 	if msg.Name == "" {
 		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "class name must be provided")
 	}
+
+	_, err = sdk.ParseCoinsNormalized(msg.Price)
+	if err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrInvalidRequest, "invalid price: '%s' (%s) CR: '%s' '%s' '%s'  '%s' '%s' '%s'", msg.Price, err, msg.Creator, msg.Uri, msg.Name, msg.GetPrice(), msg.GetUri(), msg.GetName())
+	}
 	return nil
 }
