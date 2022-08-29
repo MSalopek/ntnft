@@ -7,24 +7,30 @@ option go_package = "nt-nft/x/ntnft/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc Mint(MsgMint) returns (MsgMintResponse);
+  rpc MintToken(MsgMintToken) returns (MsgMintTokenResponse);
+  rpc EditToken(MsgEditToken) returns (MsgEditTokenResponse);
+  rpc RemoveToken(MsgRemoveToken) returns (MsgRemoveTokenResponse);
   rpc CreateClass(MsgCreateClass) returns (MsgCreateClassResponse);
   rpc CreateModuleAccountClass(MsgCreateModuleAccountClass) returns (MsgCreateModuleAccountClassResponse);
-  rpc RemoveToken(MsgRemoveToken) returns (MsgRemoveTokenResponse);
-  rpc EditToken(MsgEditToken) returns (MsgEditTokenResponse);
   rpc EditClass(MsgEditClass) returns (MsgEditClassResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
-message MsgMint {
+message MsgMintToken {
   string creator = 1;
   string class_id = 2;
+  string uri = 3;
+  string uriHash = 4;
+  string data = 5;
 }
 
 message MsgMintResponse {
   string class_id = 1;
   string token_id = 2;
   string owner = 3;
+  string uri = 4;
+  string uriHash = 5;
+  string data = 6;
 }
 
 message MsgCreateClass {
@@ -39,6 +45,11 @@ message MsgCreateClass {
 message MsgCreateClassResponse {
   string creator = 1;
   string class_id = 2;
+  string name = 3;
+  string price = 4;
+  string uri = 5;
+  string uriHash = 6;
+  string data = 7;
 }
 
 message MsgCreateModuleAccountClass {
@@ -81,18 +92,20 @@ message MsgEditTokenResponse {
 message MsgEditClass {
   string creator = 1;
   string classId = 2;
-  string uri = 3;
-  string uriHash = 4;
-  string data = 5;
+  string price = 3;
+  string uri = 4;
+  string uriHash = 5;
+  string data = 6;
 }
 
 message MsgEditClassResponse {
   string class_id = 1;
   string creator = 2;
   string name = 3;
-  string uri = 4;
-  string uriHash = 5;
-  string data = 6;
+  string price = 4;
+  string uri = 5;
+  string uriHash = 6;
+  string data = 7;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
