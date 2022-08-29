@@ -9,6 +9,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
+// RequestAccess will create acces Token and return it.
 func (k msgServer) RequestAccess(goCtx context.Context, msg *types.MsgRequestAccess) (*types.MsgRequestAccessResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -21,10 +22,17 @@ func (k msgServer) RequestAccess(goCtx context.Context, msg *types.MsgRequestAcc
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "address already registered")
 	}
 
-	// tk, err := k.ntnftKeeper.MintToken(ctx, string(authClass), msg.Creator)
-	// if err != nil {
-	// 	return nil, sdkerrors.Wrap(err, "error granting access")
-	// }
+	tk, err := k.ntnftKeeper.MintToken(ctx, string(authClass), msg.Creator)
+	if err != nil {
+		return nil, sdkerrors.Wrap(err, "error granting access")
+	}
 
-	return &types.MsgRequestAccessResponse{}, nil
+	return &types.MsgRequestAccessResponse{
+		TokenId: tk.Index,
+		ClassId: tk.ClassId,
+		Owner:   tk.Owner,
+		Uri:     tk.Uri,
+		UriHash: tk.UriHash,
+		Data:    tk.Data,
+	}, nil
 }
