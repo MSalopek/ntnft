@@ -18,10 +18,7 @@ func (k msgServer) CreatePost(goCtx context.Context, msg *types.MsgCreatePost) (
 	}
 
 	if !k.ntnftKeeper.OwnerHasClass(ctx, string(authClass), msg.Creator) {
-		if _, err := k.ntnftKeeper.MintToken(ctx,
-			string(authClass), msg.Creator); err != nil {
-			return nil, sdkerrors.Wrap(err, "error minting token for unregistered user")
-		}
+		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "address not registered")
 	}
 
 	post := types.Post{
