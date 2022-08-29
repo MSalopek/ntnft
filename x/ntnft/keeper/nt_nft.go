@@ -98,7 +98,7 @@ func (k Keeper) SafeRemoveToken(ctx sdk.Context, tokenId, callerAddr string) err
 	}
 
 	if cls.Creator == "" {
-		panic(sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Class creatir not set"))
+		panic(sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Class creator not set"))
 	}
 
 	if tk.Owner == callerAddr || cls.Creator == callerAddr {
@@ -116,7 +116,63 @@ func (k Keeper) SafeRemoveToken(ctx sdk.Context, tokenId, callerAddr string) err
 		return nil
 	}
 
-	return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "")
+	return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Address not authorized")
+}
+
+// SafeEditToken removes updates NtNFT fields: uri, uri_hash and data.
+// Tokens can only be edited if the callerAddr owns either the NtNFT or the Class.
+// Function will panic if either the Class.Creator or NtNFT.Owner is not set.
+// Function will error if called by callerAddr that does not match either Class.Creator or NtNFT.Owner.
+func (k Keeper) SafeEditToken(ctx sdk.Context, editToken types.NtNft, callerAddr string) error {
+	tk, found := k.GetNtNft(ctx, editToken.Index)
+	if !found {
+		return nil
+	}
+
+	if tk.Owner == "" {
+		panic(sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Token owner not set"))
+	}
+
+	owner, found := k.GetOwner(ctx, tk.Owner)
+	if !found {
+		return nil
+	}
+
+	cls, found := k.GetClass(ctx, tk.ClassId)
+	if !found {
+		return nil
+	}
+
+	if cls.Creator == "" {
+		panic(sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Class creator not set"))
+	}
+
+	if tk.Owner == callerAddr || cls.Creator == callerAddr {
+		editToken.Index = tk.Index
+		editToken.ClassId = tk.ClassId
+		editToken.Owner = tk.Owner
+		k.SetNtNft(ctx, editToken)
+
+		var update []*types.OwnerCollection
+		for _, elem := range owner.Collection {
+			if elem.Token.Index == tk.Index {
+				oc := types.OwnerCollection{
+					ClassId: tk.ClassId,
+					Token:   &editToken,
+				}
+				update = append(update, &oc)
+				continue
+			}
+
+			update = append(update, elem)
+		}
+		owner.Collection = update
+		k.SetOwner(ctx, owner)
+
+		return nil
+	}
+
+	return sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "Address not authorized")
 }
 
 // SetNtNft set a specific ntNft in the store from its index

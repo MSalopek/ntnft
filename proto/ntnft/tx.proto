@@ -69,6 +69,12 @@ message MsgEditToken {
 }
 
 message MsgEditTokenResponse {
+  string class_id = 1;
+  string token_id = 2;
+  string owner = 3;
+  string uri = 4;
+  string uriHash = 5;
+  string data = 6;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
