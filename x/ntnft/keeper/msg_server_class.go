@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"fmt"
 
 	"nt-nft/x/ntnft/types"
 
@@ -19,11 +18,7 @@ func (k msgServer) CreateClass(goCtx context.Context, msg *types.MsgCreateClass)
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	count := k.GetClassCount(ctx)
-	key := fmt.Sprintf("%d", count)
-
 	cls := types.Class{
-		Index:   key,
 		Name:    msg.Name,
 		Creator: msg.Creator,
 		Uri:     msg.Uri,
@@ -32,11 +27,10 @@ func (k msgServer) CreateClass(goCtx context.Context, msg *types.MsgCreateClass)
 		Price:   msg.Price,
 	}
 
-	k.SetClass(ctx, cls)
-	k.SetClassCount(ctx, count+1)
+	createdCls := k.NewClass(ctx, cls)
 	return &types.MsgCreateClassResponse{
 		Creator: msg.Creator,
-		ClassId: key,
+		ClassId: createdCls.Index,
 	}, nil
 }
 

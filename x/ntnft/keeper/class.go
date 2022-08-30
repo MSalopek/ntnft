@@ -10,7 +10,19 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 )
 
-// SafeEditClass removes updates NtNFT fields: uri, uri_hash and data.
+// NewClass creates new token class (basically a collection of non-transferrable NFTs).
+func (k Keeper) NewClass(ctx sdk.Context, class types.Class) types.Class {
+	count := k.GetClassCount(ctx)
+	key := fmt.Sprintf("%d", count)
+
+	class.Index = key
+
+	k.SetClass(ctx, class)
+	k.SetClassCount(ctx, count+1)
+	return class
+}
+
+// SafeEditClass removes updates Class fields: uri, uri_hash and data.
 // Tokens can only be edited if the callerAddr owns either the NtNFT or the Class.
 // Function will panic if either the Class.Creator or NtNFT.Owner is not set.
 // Function will error if called by callerAddr that does not match either Class.Creator or NtNFT.Owner.
